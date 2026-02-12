@@ -32,6 +32,7 @@ const topicModules: Record<string, () => Promise<{ default: TopicContent }>> = {
   "ecto-basics": () => import("@/data/topics/ecto-basics"),
   "phoenix-basics": () => import("@/data/topics/phoenix-basics"),
   "liveview": () => import("@/data/topics/liveview"),
+  "concurrency-patterns": () => import("@/data/topics/concurrency-patterns"),
 };
 
 interface TopicPageProps {
