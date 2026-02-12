@@ -19,6 +19,7 @@ const topicModules: Record<string, () => Promise<{ default: TopicContent }>> = {
   "enumerables": () => import("@/data/topics/enumerables"),
   "strings-in-depth": () => import("@/data/topics/strings-in-depth"),
   "processes": () => import("@/data/topics/processes"),
+  "genserver": () => import("@/data/topics/genserver"),
 };
 
 interface TopicPageProps {
