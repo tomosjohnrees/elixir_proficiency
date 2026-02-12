@@ -18,7 +18,7 @@ export const topicRegistry: TopicMeta[] = [
   { slug: "protocols", title: "Protocols", description: "Polymorphism, protocol definitions, and implementations", number: 15, active: true },
   { slug: "behaviours", title: "Behaviours", description: "Contracts, callbacks, and dynamic dispatch", number: 16, active: true },
   { slug: "macros", title: "Macros & Metaprogramming", description: "Quote, unquote, and compile-time code generation", number: 17, active: true },
-  { slug: "error-handling", title: "Error Handling", description: "Try/rescue, throw/catch, and the \"let it crash\" philosophy", number: 18, active: false },
+  { slug: "error-handling", title: "Error Handling", description: "Try/rescue, throw/catch, and the \"let it crash\" philosophy", number: 18, active: true },
   { slug: "comprehensions", title: "Comprehensions", description: "for expressions with generators, filters, and into", number: 19, active: false },
   { slug: "sigils", title: "Sigils & Regex", description: "Built-in sigils, custom sigils, and regular expressions", number: 20, active: false },
   { slug: "ecto-basics", title: "Ecto Basics", description: "Schemas, changesets, and basic queries", number: 21, active: false },
