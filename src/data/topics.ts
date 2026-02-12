@@ -23,7 +23,7 @@ export const topicRegistry: TopicMeta[] = [
   { slug: "sigils", title: "Sigils & Regex", description: "Built-in sigils, custom sigils, and regular expressions", number: 20, active: true },
   { slug: "ecto-basics", title: "Ecto Basics", description: "Schemas, changesets, and basic queries", number: 21, active: true },
   { slug: "phoenix-basics", title: "Phoenix Basics", description: "Router, controllers, views, and templates", number: 22, active: true },
-  { slug: "liveview", title: "LiveView", description: "Real-time server-rendered UIs with LiveView", number: 23, active: false },
+  { slug: "liveview", title: "LiveView", description: "Real-time server-rendered UIs with LiveView", number: 23, active: true },
   { slug: "concurrency-patterns", title: "Concurrency Patterns", description: "Tasks, agents, and common concurrent patterns", number: 24, active: false },
   { slug: "deployment", title: "Releases & Deployment", description: "Mix releases, configuration, and deployment strategies", number: 25, active: false },
 ];
