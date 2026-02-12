@@ -13,7 +13,7 @@ export const topicRegistry: TopicMeta[] = [
   { slug: "processes", title: "Processes", description: "Spawning processes, message passing, and links", number: 10, active: true },
   { slug: "genserver", title: "GenServer", description: "Generic servers, callbacks, and state management", number: 11, active: true },
   { slug: "supervisors", title: "Supervisors", description: "Supervision trees, strategies, and fault tolerance", number: 12, active: true },
-  { slug: "mix-and-otp", title: "Mix & OTP", description: "Project tooling, dependencies, and OTP applications", number: 13, active: false },
+  { slug: "mix-and-otp", title: "Mix & OTP", description: "Project tooling, dependencies, and OTP applications", number: 13, active: true },
   { slug: "testing", title: "Testing with ExUnit", description: "Unit tests, doctests, and test organization", number: 14, active: false },
   { slug: "protocols", title: "Protocols", description: "Polymorphism, protocol definitions, and implementations", number: 15, active: false },
   { slug: "behaviours", title: "Behaviours", description: "Contracts, callbacks, and dynamic dispatch", number: 16, active: false },
