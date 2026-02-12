@@ -15,7 +15,7 @@ export const topicRegistry: TopicMeta[] = [
   { slug: "supervisors", title: "Supervisors", description: "Supervision trees, strategies, and fault tolerance", number: 12, active: true },
   { slug: "mix-and-otp", title: "Mix & OTP", description: "Project tooling, dependencies, and OTP applications", number: 13, active: true },
   { slug: "testing", title: "Testing with ExUnit", description: "Unit tests, doctests, and test organization", number: 14, active: true },
-  { slug: "protocols", title: "Protocols", description: "Polymorphism, protocol definitions, and implementations", number: 15, active: false },
+  { slug: "protocols", title: "Protocols", description: "Polymorphism, protocol definitions, and implementations", number: 15, active: true },
   { slug: "behaviours", title: "Behaviours", description: "Contracts, callbacks, and dynamic dispatch", number: 16, active: false },
   { slug: "macros", title: "Macros & Metaprogramming", description: "Quote, unquote, and compile-time code generation", number: 17, active: false },
   { slug: "error-handling", title: "Error Handling", description: "Try/rescue, throw/catch, and the \"let it crash\" philosophy", number: 18, active: false },
