@@ -10,7 +10,7 @@ export const topicRegistry: TopicMeta[] = [
   { slug: "recursion", title: "Recursion", description: "Recursive thinking, base cases, and tail-call optimization", number: 7, active: true },
   { slug: "enumerables", title: "Enumerables & Streams", description: "Enum module, lazy streams, and pipeline operator", number: 8, active: true },
   { slug: "strings-in-depth", title: "Strings in Depth", description: "Binaries, UTF-8, charlists, and the String module", number: 9, active: true },
-  { slug: "processes", title: "Processes", description: "Spawning processes, message passing, and links", number: 10, active: false },
+  { slug: "processes", title: "Processes", description: "Spawning processes, message passing, and links", number: 10, active: true },
   { slug: "genserver", title: "GenServer", description: "Generic servers, callbacks, and state management", number: 11, active: false },
   { slug: "supervisors", title: "Supervisors", description: "Supervision trees, strategies, and fault tolerance", number: 12, active: false },
   { slug: "mix-and-otp", title: "Mix & OTP", description: "Project tooling, dependencies, and OTP applications", number: 13, active: false },
