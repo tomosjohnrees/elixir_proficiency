@@ -24,6 +24,7 @@ const topicModules: Record<string, () => Promise<{ default: TopicContent }>> = {
   "mix-and-otp": () => import("@/data/topics/mix-and-otp"),
   "testing": () => import("@/data/topics/testing"),
   "protocols": () => import("@/data/topics/protocols"),
+  "behaviours": () => import("@/data/topics/behaviours"),
 };
 
 interface TopicPageProps {
