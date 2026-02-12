@@ -20,6 +20,7 @@ const topicModules: Record<string, () => Promise<{ default: TopicContent }>> = {
   "strings-in-depth": () => import("@/data/topics/strings-in-depth"),
   "processes": () => import("@/data/topics/processes"),
   "genserver": () => import("@/data/topics/genserver"),
+  "supervisors": () => import("@/data/topics/supervisors"),
 };
 
 interface TopicPageProps {
