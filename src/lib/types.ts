@@ -80,3 +80,9 @@ export interface TopicContent {
   quiz: QuizContent;
   practice: PracticeContent;
 }
+
+export interface TaggedQuizQuestion extends QuizQuestion {
+  topicSlug: string;
+  topicTitle: string;
+  topicNumber: number;
+}

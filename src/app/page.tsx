@@ -14,6 +14,23 @@ export default function Home() {
         </p>
       </div>
 
+      <Link
+        href="/quiz"
+        className="block rounded-xl border-2 border-accent bg-accent-faint p-6 mb-8 hover:shadow-lg transition-all group"
+      >
+        <div className="flex items-center gap-4">
+          <span className="text-3xl">&#9889;</span>
+          <div>
+            <h2 className="text-lg font-bold group-hover:text-accent transition-colors">
+              Random Quiz
+            </h2>
+            <p className="text-sm text-muted mt-0.5">
+              Test yourself with 10 random questions from across all 25 topics
+            </p>
+          </div>
+        </div>
+      </Link>
+
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {topicRegistry.map((topic) => (
           <div key={topic.slug} className="relative">
