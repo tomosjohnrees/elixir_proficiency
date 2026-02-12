@@ -3,24 +3,80 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --accent: #6b46c1;
+  --accent-light: #9f7aea;
+  --accent-faint: #f3e8ff;
+  --surface: #f9fafb;
+  --surface-2: #f3f4f6;
+  --border: #e5e7eb;
+  --muted: #6b7280;
+
+  /* Syntax highlighting */
+  --syn-keyword: #8b5cf6;
+  --syn-atom: #d97706;
+  --syn-string: #059669;
+  --syn-number: #2563eb;
+  --syn-comment: #9ca3af;
+  --syn-operator: #e11d48;
+  --syn-module: #0891b2;
+  --syn-function: #7c3aed;
+
+  --code-bg: #f8f8fc;
+  --code-border: #e5e7eb;
+  --output-bg: #f1f5f9;
+}
+
+[data-theme="dark"] {
+  --background: #0f0f14;
+  --foreground: #e5e5e5;
+  --accent: #9f7aea;
+  --accent-light: #b794f4;
+  --accent-faint: #2d1f4e;
+  --surface: #1a1a24;
+  --surface-2: #24243a;
+  --border: #2e2e44;
+  --muted: #9ca3af;
+
+  --syn-keyword: #b794f4;
+  --syn-atom: #fbbf24;
+  --syn-string: #34d399;
+  --syn-number: #60a5fa;
+  --syn-comment: #6b7280;
+  --syn-operator: #fb7185;
+  --syn-module: #22d3ee;
+  --syn-function: #a78bfa;
+
+  --code-bg: #16162a;
+  --code-border: #2e2e44;
+  --output-bg: #1e1e32;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-accent-faint: var(--accent-faint);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
+
+/* Syntax highlighting classes */
+.syn-keyword { color: var(--syn-keyword); font-weight: 600; }
+.syn-atom { color: var(--syn-atom); }
+.syn-string { color: var(--syn-string); }
+.syn-number { color: var(--syn-number); }
+.syn-comment { color: var(--syn-comment); font-style: italic; }
+.syn-operator { color: var(--syn-operator); }
+.syn-module { color: var(--syn-module); }
+.syn-function { color: var(--syn-function); }
