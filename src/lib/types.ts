@@ -26,6 +26,8 @@ export interface OperatorGroup {
 }
 
 export interface VisualsContent {
+  animation?: React.ComponentType;
+  animationDuration?: number;
   dataTypes: DataTypeCard[];
   operatorGroups: OperatorGroup[];
 }

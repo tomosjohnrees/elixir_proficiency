@@ -1,13 +1,3 @@
-# Animated SVG Visuals Plan
-
-Proposed animated SVGs to add to topics where motion genuinely helps convey a concept that static text and code examples struggle to communicate. Grouped into tiers by pedagogical impact.
-
----
-
-## Tier 1 — High Impact
-
-These concepts are inherently dynamic (involving flows, timing, state changes, or spatial relationships) and are common sources of confusion for learners.
-
 ### 1. Body Recursion vs Tail Recursion — Call Stack
 **Topic:** 07 Recursion (`recursion`) · Visuals + Deep Dive
 **Why:** The stack growing and collapsing is the single most impactful thing to animate. Text traces like `sum([1,2,3]) = 1 + sum([2,3]) = ...` are hard to follow; seeing frames pile up and unwind is immediate.
@@ -68,12 +58,6 @@ Both paths play side by side for direct comparison.
 **Why:** `with` is one of the hardest control flow concepts for newcomers. Data flowing forward on match and ejecting to `else` on failure is inherently dynamic.
 **Animation:** A pipeline of `<-` stages. Data enters from the left. At each stage, pattern matching succeeds (green) and extracted values flow forward, or fails (red) and the data ejects downward directly to the `else` block, skipping remaining stages. Animate a successful path, then replay with a failure at stage 2 to show early exit.
 
----
-
-## Tier 2 — Medium Impact
-
-Solid visual concepts that would enhance understanding but address less commonly confused topics or concepts that are partially conveyed by static diagrams.
-
 ### 11. Macro Expansion at Compile Time
 **Topic:** 17 Macros (`macros`) · Visuals + Deep Dive
 **Why:** The two-phase nature (compile-time transformation, then runtime execution) is the hardest concept in the topic. Separating the phases visually is the key insight.
@@ -129,12 +113,6 @@ Solid visual concepts that would enhance understanding but address less commonly
 **Why:** Immutable nested updates require reconstructing every intermediate map from the inside out. Seeing this makes the cost visible.
 **Animation:** Concentric boxes: outer map → `:user` → `:address` → `:city`. `put_in` changes the city. The innermost box is copied with the new value. The containing box is copied pointing to the new inner box. This ripples outward. Old structure fades (still intact); new structure is built inside-out.
 
----
-
-## Tier 3 — Nice to Have
-
-Would improve the experience but address concepts that are either less commonly confused or already well-served by static illustrations.
-
 ### 22. Task.async Parallel vs Sequential Execution
 **Topic:** 24 Concurrency Patterns (`concurrency-patterns`) · Visuals
 Two timelines side by side. Sequential: Task 1 takes 1s, then Task 2 takes 1s (total 2s). Parallel: both run simultaneously (total ~1s). Progress bars and timer make the speedup visceral.
@@ -186,15 +164,3 @@ Side by side. *Linked (Task.async):* Task crashes, crash propagates, caller also
 ### 34. List vs Tuple Memory Layout
 **Topic:** 03 Lists & Tuples (`lists-and-tuples`) · Visuals
 Split screen. Tuple: contiguous memory block with instant random access (arrow jumps to any slot). List: scattered nodes with pointers (accessing third element follows two pointers). Update: tuple copies entire block; list copies only nodes up to the change point.
-
----
-
-## Topics With No Recommended Animations
-
-These topics are well-served by their existing code examples and static visuals:
-
-- **01 Basic Data Types** — Concepts are definitional rather than dynamic. Truthiness flow is a possible Tier 3 candidate but low priority.
-- **13 Mix & OTP** — Primarily tooling and configuration. The boot sequence could be animated but is not high-value.
-- **14 Testing with ExUnit** — Code-centric topic with no inherently dynamic concepts that need animation.
-- **16 Behaviours** — Dynamic dispatch could be animated but overlaps heavily with the Protocols animation (#26) and is lower priority.
-- **20 Sigils & Regex** — Regex capture highlighting is possible but better served by interactive regex tools than embedded SVGs.

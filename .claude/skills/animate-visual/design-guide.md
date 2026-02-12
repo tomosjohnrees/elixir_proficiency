@@ -12,8 +12,8 @@ Learners need time to read labels, understand what's moving, and connect it to t
 - Initial pause before animation starts: 1-2s (let the viewer orient)
 - Each conceptual step: 2-4s
 - Pause between phases: 1.5-3s
-- End-of-cycle pause before loop: 3-5s
-- Total cycle: 10-25s depending on complexity
+- Total animation (before rest): 10-20s depending on complexity
+- Set `animationDuration` to animation end + 4-6s rest (the container handles the pause and fade)
 
 ### 3. Progressive Revelation
 Don't show everything at once. Build up the visual step by step:
@@ -137,18 +137,20 @@ For messages traveling between processes:
 </circle>
 ```
 
-### Looping with Rest
-Wrap the entire animation in a group and use a long total duration:
+### Looping and Lifecycle (handled by AnimationContainer)
 
-```css
-/* 15s of animation + 5s rest = 20s total cycle */
-@keyframes fullCycle {
-  0% { /* start state */ }
-  75% { /* end state */ }
-  75.1%, 100% { /* reset to start, held for 5s rest */ }
-}
-.animation-group { animation: fullCycle 20s ease-in-out infinite; }
-```
+Animation components do **not** handle looping themselves. The `AnimationContainer` component (`src/components/ui/AnimationContainer.tsx`) wraps each animation and manages:
+
+- **Scroll-triggered playback**: Animation only renders when scrolled into view (IntersectionObserver, threshold 0.3)
+- **Looping via remount**: After `cycleDuration` seconds, the container fades out, increments a React `key`, and remounts the animation — restarting all SVG `<animate>` timers from scratch
+- **Fade transitions**: 500ms fade-out before cycle end, fade-in on remount
+- **Cleanup**: Timers are cleared when scrolled out of view; a fresh cycle starts on scroll back in
+
+**What this means for animation components:**
+- Use `fill="freeze"` on all `<animate>` elements — they play once and hold their final state
+- Do **not** add fade-out `<animate>` elements at the end of the cycle
+- Do **not** use `repeatCount="indefinite"` or CSS `infinite` loops
+- The `animationDuration` on the topic data controls when the container resets. Set it to: last animation end time + 4-6s rest pause.
 
 ### Prefer SVG-native Animation for Complex Paths
 Use `<animate>`, `<animateTransform>`, and `<animateMotion>` for:
@@ -178,17 +180,9 @@ Many animations compare two approaches (eager vs lazy, call vs cast, etc.). Use 
 
 ## Integration Pattern
 
-The VisualsSection component should render the animation above the existing data type cards:
+The `VisualsSection` component automatically wraps animations in `AnimationContainer` when `animationDuration` is set. No changes to VisualsSection are needed when adding new animations.
 
-```tsx
-{visuals.animation && (
-  <div className="mb-8">
-    <visuals.animation />
-  </div>
-)}
-```
-
-The topic data file stores a reference to the component:
+The topic data file stores a reference to the component and the cycle duration:
 
 ```ts
 import AnimationXXName from '@/components/animations/AnimationXXName';
@@ -196,7 +190,10 @@ import AnimationXXName from '@/components/animations/AnimationXXName';
 // In the visuals section:
 visuals: {
   animation: AnimationXXName,
+  animationDuration: 25, // total cycle in seconds (animation + rest pause)
   dataTypes: [...],
   operatorGroups: [...]
 }
 ```
+
+The `animationDuration` value tells `AnimationContainer` when to fade out and remount. Calculate it as: **last animation end time + 4-6 seconds rest**. For example, if the last `<animate>` fires at 18s and takes 1s, set `animationDuration` to ~24-25.

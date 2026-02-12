@@ -1,4 +1,5 @@
 import type { TopicContent } from "@/lib/types";
+import Animation01Recursion from "@/components/animations/Animation01Recursion";
 
 const recursion: TopicContent = {
   meta: {
@@ -29,6 +30,8 @@ const recursion: TopicContent = {
   },
 
   visuals: {
+    animation: Animation01Recursion,
+    animationDuration: 24,
     dataTypes: [
       { name: "Base Case", color: "#059669", examples: ["def sum([]), do: 0", "def factorial(0), do: 1", "def length([]), do: 0"], description: "The stopping condition. Pattern matches the simplest input and returns a value directly without recursing." },
       { name: "Body Recursion", color: "#6b46c1", examples: ["def sum([h | t]) do", "  h + sum(t)", "end"], description: "The recursive call is NOT the last operation — work remains after it returns. Builds up the call stack." },

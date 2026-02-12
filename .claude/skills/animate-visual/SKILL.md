@@ -27,15 +27,18 @@ Create an animated SVG React component for animation **#$ARGUMENTS** defined in 
    - Create a new React component at `src/components/animations/<ComponentName>.tsx`
    - Use the naming convention: `Animation{Number}{ShortName}.tsx` (e.g., `Animation01Recursion.tsx`)
    - The component must be a pure SVG animation — no external animation libraries
-   - Use CSS animations via `<style>` blocks inside the SVG, or inline `@keyframes`
+   - Use SVG `<animate>` elements with `fill="freeze"` for sequenced steps, or CSS `@keyframes` for simple transforms
    - The SVG must be responsive (`viewBox` + `width="100%"`)
+   - **Do NOT add looping, fade-out, or scroll-trigger logic** — `AnimationContainer` handles all of that by remounting the component on each cycle
+   - The animation plays once from start to end, then holds its final state. The container fades out and remounts to restart.
+   - Do NOT add manual fade-out `<animate>` elements at the end of the cycle
    - Follow the design principles in [design-guide.md](design-guide.md)
 
 5. **Integrate into the topic**
-   - Add an `animationComponent` field to the topic's visuals content if not already present
-   - Import and render the animation in the VisualsSection component (add support for it if this is the first animation)
-   - The animation should appear prominently at the top of the visuals section, above the data type cards
-   - Ensure the integration is type-safe — extend `VisualsContent` in `types.ts` if needed
+   - Import the animation component in the topic data file at `src/data/topics/<slug>.ts`
+   - Set `animation: AnimationXXName` in the topic's `visuals` object
+   - Set `animationDuration: <seconds>` — the total cycle time (animation + rest pause at end). This tells `AnimationContainer` when to fade out and remount. Calculate as: last animation timestamp + 4-6s rest.
+   - The `VisualsSection` component already wraps animations in `AnimationContainer` when `animationDuration` is set — no changes needed there.
 
 6. **Verify**
    - Run `npm run build` to check for type errors and build issues
@@ -47,7 +50,7 @@ Create an animated SVG React component for animation **#$ARGUMENTS** defined in 
 - **Use `animation-delay`** to stagger sequential steps so they don't overlap
 - **Ease functions**: Prefer `ease-in-out` or `cubic-bezier` for smooth, natural motion. Never use `linear` for conceptual animations.
 - **Pause between phases**: Add 1-2s pauses between major conceptual transitions
-- **Looping**: Animations should loop (`infinite`) with a comfortable pause at the end before restarting (at least 3 seconds)
+- **No manual looping or fade-out**: `AnimationContainer` (at `src/components/ui/AnimationContainer.tsx`) handles scroll-triggered playback, looping via key-based remounting, and fade transitions between cycles. The animation component just plays once and holds its final state with `fill="freeze"`.
 - **Colors**: Use CSS custom properties from the app's theme (`var(--accent)`, `var(--text)`, `var(--surface)`) for theme compatibility. Use semantic colors: green for success/match, red for failure/error, blue/purple for neutral highlights.
 - **Text in SVGs**: Use `font-family: 'Fira Code', 'JetBrains Mono', monospace` for code, and the system sans-serif for labels. Ensure text is large enough to read (minimum 14px equivalent).
 - **Accessibility**: Include `<title>` and `<desc>` elements in the SVG for screen readers.

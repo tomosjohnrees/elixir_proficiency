@@ -1,4 +1,5 @@
 import type { VisualsContent } from "@/lib/types";
+import AnimationContainer from "@/components/ui/AnimationContainer";
 
 interface VisualsSectionProps {
   content: VisualsContent;
@@ -11,6 +12,23 @@ export default function VisualsSection({ content }: VisualsSectionProps) {
         <span className="text-accent mr-2">&#9672;</span>
         Visual Reference
       </h2>
+
+      {/* Animated Visual */}
+      {content.animation && content.animationDuration && (
+        <div className="mb-8">
+          <AnimationContainer
+            cycleDuration={content.animationDuration}
+            aspectRatio="800 / 460"
+          >
+            <content.animation />
+          </AnimationContainer>
+        </div>
+      )}
+      {content.animation && !content.animationDuration && (
+        <div className="mb-8">
+          <content.animation />
+        </div>
+      )}
 
       {/* Data Type Cards */}
       <h3 className="text-lg font-semibold mb-4">Data Types</h3>
