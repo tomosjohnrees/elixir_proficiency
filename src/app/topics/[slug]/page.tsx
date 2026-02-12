@@ -14,6 +14,8 @@ const topicModules: Record<string, () => Promise<{ default: TopicContent }>> = {
   "lists-and-tuples": () => import("@/data/topics/lists-and-tuples"),
   "maps-and-structs": () => import("@/data/topics/maps-and-structs"),
   "control-flow": () => import("@/data/topics/control-flow"),
+  "functions-and-modules": () => import("@/data/topics/functions-and-modules"),
+  "recursion": () => import("@/data/topics/recursion"),
 };
 
 interface TopicPageProps {
