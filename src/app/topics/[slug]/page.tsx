@@ -11,6 +11,7 @@ import type { TopicContent } from "@/lib/types";
 const topicModules: Record<string, () => Promise<{ default: TopicContent }>> = {
   "basic-data-types": () => import("@/data/topics/basic-data-types"),
   "pattern-matching": () => import("@/data/topics/pattern-matching"),
+  "lists-and-tuples": () => import("@/data/topics/lists-and-tuples"),
 };
 
 interface TopicPageProps {
