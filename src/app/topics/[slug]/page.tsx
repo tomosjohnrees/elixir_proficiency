@@ -16,6 +16,7 @@ const topicModules: Record<string, () => Promise<{ default: TopicContent }>> = {
   "control-flow": () => import("@/data/topics/control-flow"),
   "functions-and-modules": () => import("@/data/topics/functions-and-modules"),
   "recursion": () => import("@/data/topics/recursion"),
+  "enumerables": () => import("@/data/topics/enumerables"),
 };
 
 interface TopicPageProps {

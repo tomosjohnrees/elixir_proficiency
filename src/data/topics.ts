@@ -8,7 +8,7 @@ export const topicRegistry: TopicMeta[] = [
   { slug: "control-flow", title: "Control Flow", description: "case, cond, if/unless, and with expressions", number: 5, active: true },
   { slug: "functions-and-modules", title: "Functions & Modules", description: "Named functions, anonymous functions, modules, and imports", number: 6, active: true },
   { slug: "recursion", title: "Recursion", description: "Recursive thinking, base cases, and tail-call optimization", number: 7, active: true },
-  { slug: "enumerables", title: "Enumerables & Streams", description: "Enum module, lazy streams, and pipeline operator", number: 8, active: false },
+  { slug: "enumerables", title: "Enumerables & Streams", description: "Enum module, lazy streams, and pipeline operator", number: 8, active: true },
   { slug: "strings-in-depth", title: "Strings in Depth", description: "Binaries, UTF-8, charlists, and the String module", number: 9, active: false },
   { slug: "processes", title: "Processes", description: "Spawning processes, message passing, and links", number: 10, active: false },
   { slug: "genserver", title: "GenServer", description: "Generic servers, callbacks, and state management", number: 11, active: false },
