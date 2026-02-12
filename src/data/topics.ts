@@ -20,7 +20,7 @@ export const topicRegistry: TopicMeta[] = [
   { slug: "macros", title: "Macros & Metaprogramming", description: "Quote, unquote, and compile-time code generation", number: 17, active: true },
   { slug: "error-handling", title: "Error Handling", description: "Try/rescue, throw/catch, and the \"let it crash\" philosophy", number: 18, active: true },
   { slug: "comprehensions", title: "Comprehensions", description: "for expressions with generators, filters, and into", number: 19, active: true },
-  { slug: "sigils", title: "Sigils & Regex", description: "Built-in sigils, custom sigils, and regular expressions", number: 20, active: false },
+  { slug: "sigils", title: "Sigils & Regex", description: "Built-in sigils, custom sigils, and regular expressions", number: 20, active: true },
   { slug: "ecto-basics", title: "Ecto Basics", description: "Schemas, changesets, and basic queries", number: 21, active: false },
   { slug: "phoenix-basics", title: "Phoenix Basics", description: "Router, controllers, views, and templates", number: 22, active: false },
   { slug: "liveview", title: "LiveView", description: "Real-time server-rendered UIs with LiveView", number: 23, active: false },

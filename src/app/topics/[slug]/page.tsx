@@ -28,6 +28,7 @@ const topicModules: Record<string, () => Promise<{ default: TopicContent }>> = {
   "macros": () => import("@/data/topics/macros"),
   "error-handling": () => import("@/data/topics/error-handling"),
   "comprehensions": () => import("@/data/topics/comprehensions"),
+  "sigils": () => import("@/data/topics/sigils"),
 };
 
 interface TopicPageProps {
