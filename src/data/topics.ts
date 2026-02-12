@@ -5,7 +5,7 @@ export const topicRegistry: TopicMeta[] = [
   { slug: "pattern-matching", title: "Pattern Matching", description: "The match operator, destructuring, and pin operator", number: 2, active: true },
   { slug: "lists-and-tuples", title: "Lists & Tuples", description: "Linked lists, tuples, keyword lists, and common operations", number: 3, active: true },
   { slug: "maps-and-structs", title: "Maps & Structs", description: "Key-value maps, struct definitions, and nested updates", number: 4, active: true },
-  { slug: "control-flow", title: "Control Flow", description: "case, cond, if/unless, and with expressions", number: 5, active: false },
+  { slug: "control-flow", title: "Control Flow", description: "case, cond, if/unless, and with expressions", number: 5, active: true },
   { slug: "functions-and-modules", title: "Functions & Modules", description: "Named functions, anonymous functions, modules, and imports", number: 6, active: false },
   { slug: "recursion", title: "Recursion", description: "Recursive thinking, base cases, and tail-call optimization", number: 7, active: false },
   { slug: "enumerables", title: "Enumerables & Streams", description: "Enum module, lazy streams, and pipeline operator", number: 8, active: false },
