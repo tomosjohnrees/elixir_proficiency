@@ -21,6 +21,7 @@ import errorHandling from "@/data/topics/error-handling";
 import comprehensions from "@/data/topics/comprehensions";
 import sigils from "@/data/topics/sigils";
 import ectoBasics from "@/data/topics/ecto-basics";
+import phoenixBasics from "@/data/topics/phoenix-basics";
 
 describe("topicRegistry", () => {
   it("has 25 topics", () => {
@@ -33,9 +34,9 @@ describe("topicRegistry", () => {
     });
   });
 
-  it("has topics 1 through 21 active", () => {
+  it("has topics 1 through 22 active", () => {
     const active = topicRegistry.filter((t) => t.active);
-    expect(active).toHaveLength(21);
+    expect(active).toHaveLength(22);
     expect(active[0].slug).toBe("basic-data-types");
     expect(active[1].slug).toBe("pattern-matching");
     expect(active[2].slug).toBe("lists-and-tuples");
@@ -57,6 +58,7 @@ describe("topicRegistry", () => {
     expect(active[18].slug).toBe("comprehensions");
     expect(active[19].slug).toBe("sigils");
     expect(active[20].slug).toBe("ecto-basics");
+    expect(active[21].slug).toBe("phoenix-basics");
   });
 
   it("each topic has required fields", () => {
@@ -1249,6 +1251,62 @@ describe("ectoBasics topic content", () => {
   it("has 3 practice problems", () => {
     expect(ectoBasics.practice.problems).toHaveLength(3);
     ectoBasics.practice.problems.forEach((p) => {
+      expect(p.title).toBeTruthy();
+      expect(p.prompt).toBeTruthy();
+      expect(p.hints.length).toBeGreaterThan(0);
+      expect(p.solution).toBeTruthy();
+      expect(p.walkthrough.length).toBeGreaterThan(0);
+      expect(["beginner", "intermediate", "advanced"]).toContain(p.difficulty);
+    });
+  });
+});
+
+describe("phoenixBasics topic content", () => {
+  it("has correct meta", () => {
+    expect(phoenixBasics.meta.slug).toBe("phoenix-basics");
+    expect(phoenixBasics.meta.number).toBe(22);
+    expect(phoenixBasics.meta.active).toBe(true);
+  });
+
+  it("has ELI5 content with items and takeaways", () => {
+    expect(phoenixBasics.eli5.analogyTitle).toBeTruthy();
+    expect(phoenixBasics.eli5.analogy).toBeTruthy();
+    expect(phoenixBasics.eli5.items.length).toBeGreaterThan(0);
+    expect(phoenixBasics.eli5.keyTakeaways.length).toBeGreaterThan(0);
+  });
+
+  it("has visual content with data types", () => {
+    expect(phoenixBasics.visuals.dataTypes.length).toBeGreaterThan(0);
+
+    phoenixBasics.visuals.dataTypes.forEach((dt) => {
+      expect(dt.name).toBeTruthy();
+      expect(dt.color).toMatch(/^#/);
+      expect(dt.examples.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("has deep dive sections with prose", () => {
+    expect(phoenixBasics.deepDive.sections.length).toBeGreaterThanOrEqual(4);
+    phoenixBasics.deepDive.sections.forEach((section) => {
+      expect(section.title).toBeTruthy();
+      expect(section.prose.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("has 5 quiz questions", () => {
+    expect(phoenixBasics.quiz.questions).toHaveLength(5);
+    phoenixBasics.quiz.questions.forEach((q) => {
+      expect(q.question).toBeTruthy();
+      expect(q.options.length).toBeGreaterThanOrEqual(2);
+      expect(q.explanation).toBeTruthy();
+      const correct = q.options.filter((o) => o.correct);
+      expect(correct).toHaveLength(1);
+    });
+  });
+
+  it("has 3 practice problems", () => {
+    expect(phoenixBasics.practice.problems).toHaveLength(3);
+    phoenixBasics.practice.problems.forEach((p) => {
       expect(p.title).toBeTruthy();
       expect(p.prompt).toBeTruthy();
       expect(p.hints.length).toBeGreaterThan(0);

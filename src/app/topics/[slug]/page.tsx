@@ -30,6 +30,7 @@ const topicModules: Record<string, () => Promise<{ default: TopicContent }>> = {
   "comprehensions": () => import("@/data/topics/comprehensions"),
   "sigils": () => import("@/data/topics/sigils"),
   "ecto-basics": () => import("@/data/topics/ecto-basics"),
+  "phoenix-basics": () => import("@/data/topics/phoenix-basics"),
 };
 
 interface TopicPageProps {
