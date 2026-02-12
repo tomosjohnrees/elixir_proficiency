@@ -33,6 +33,7 @@ const topicModules: Record<string, () => Promise<{ default: TopicContent }>> = {
   "phoenix-basics": () => import("@/data/topics/phoenix-basics"),
   "liveview": () => import("@/data/topics/liveview"),
   "concurrency-patterns": () => import("@/data/topics/concurrency-patterns"),
+  "deployment": () => import("@/data/topics/deployment"),
 };
 
 interface TopicPageProps {
