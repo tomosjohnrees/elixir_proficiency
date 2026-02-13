@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion } from "motion/react";
 
 const SECTIONS = [
   { id: "eli5", label: "ELI5" },
@@ -50,13 +51,20 @@ export default function SectionNav() {
           <button
             key={id}
             onClick={() => scrollTo(id)}
-            className={`px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
+            className={`relative px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors ${
               active === id
-                ? "border-accent text-accent"
-                : "border-transparent text-muted hover:text-foreground"
+                ? "text-accent"
+                : "text-muted hover:text-foreground"
             }`}
           >
             {label}
+            {active === id && (
+              <motion.div
+                layoutId="section-underline"
+                className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent"
+                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              />
+            )}
           </button>
         ))}
       </div>

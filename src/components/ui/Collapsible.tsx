@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "motion/react";
 
 interface CollapsibleProps {
   title: string;
@@ -22,11 +23,13 @@ export default function Collapsible({
         className="w-full flex items-center justify-between px-4 py-3 bg-surface hover:bg-surface-2 transition-colors text-left font-medium"
       >
         <span>{title}</span>
-        <svg
-          className={`w-5 h-5 text-muted transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+        <motion.svg
+          className="w-5 h-5 text-muted"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          animate={{ rotate: open ? 180 : 0 }}
+          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
         >
           <path
             strokeLinecap="round"
@@ -34,15 +37,16 @@ export default function Collapsible({
             strokeWidth={2}
             d="M19 9l-7 7-7-7"
           />
-        </svg>
+        </motion.svg>
       </button>
-      <div
-        className={`grid transition-all duration-200 ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+      <motion.div
+        initial={defaultOpen ? { height: "auto" } : { height: 0 }}
+        animate={{ height: open ? "auto" : 0 }}
+        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+        className="overflow-hidden"
       >
-        <div className="overflow-hidden">
-          <div className="px-4 py-3">{children}</div>
-        </div>
-      </div>
+        <div className="px-4 py-3">{children}</div>
+      </motion.div>
     </div>
   );
 }

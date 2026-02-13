@@ -16,7 +16,6 @@ describe("SectionNav", () => {
   it("highlights ELI5 as the default active tab", () => {
     render(<SectionNav />);
     const eli5Button = screen.getByText("ELI5");
-    expect(eli5Button.className).toContain("border-accent");
     expect(eli5Button.className).toContain("text-accent");
   });
 

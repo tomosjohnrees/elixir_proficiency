@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import type { QuizQuestion as QuizQuestionType } from "@/lib/types";
 
 interface QuizQuestionProps {
@@ -46,10 +47,13 @@ export default function QuizQuestion({
           }
 
           return (
-            <button
+            <motion.button
               key={i}
               onClick={() => handleSelect(i)}
               disabled={revealed}
+              whileHover={!revealed ? { scale: 1.01 } : undefined}
+              whileTap={!revealed ? { scale: 0.98 } : undefined}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
               className={`w-full text-left px-4 py-3 rounded-lg border transition-colors ${style} ${
                 revealed ? "cursor-default" : "cursor-pointer"
               }`}
@@ -58,19 +62,29 @@ export default function QuizQuestion({
                 {String.fromCharCode(65 + i)}.
               </span>
               {option.label}
-            </button>
+            </motion.button>
           );
         })}
       </div>
-      {revealed && (
-        <div
-          className="rounded-lg px-4 py-3 text-sm"
-          style={{ backgroundColor: "var(--surface)", borderLeft: "3px solid var(--accent)" }}
-        >
-          <span className="font-semibold text-accent">Explanation: </span>
-          {question.explanation}
-        </div>
-      )}
+      <AnimatePresence>
+        {revealed && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-hidden"
+          >
+            <div
+              className="rounded-lg px-4 py-3 text-sm"
+              style={{ backgroundColor: "var(--surface)", borderLeft: "3px solid var(--accent)" }}
+            >
+              <span className="font-semibold text-accent">Explanation: </span>
+              {question.explanation}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
