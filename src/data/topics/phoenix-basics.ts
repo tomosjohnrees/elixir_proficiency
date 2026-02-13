@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import Animation09PhoenixRequest from "@/components/animations/Animation09PhoenixRequest";
+import Animation32PlugHalt from "@/components/animations/Animation32PlugHalt";
 
 const phoenixBasics: TopicContent = {
   meta: {
@@ -30,8 +31,10 @@ const phoenixBasics: TopicContent = {
   },
 
   visuals: {
-    animation: Animation09PhoenixRequest,
-    animationDuration: 19,
+    animations: [
+      { component: Animation09PhoenixRequest, duration: 19 },
+      { component: Animation32PlugHalt, duration: 16 },
+    ],
     dataTypes: [
       { name: "Endpoint", color: "#6b7280", examples: ["plug Plug.Logger", "plug Plug.Parsers", "plug MyAppWeb.Router"], description: "The entry point for every request. Handles low-level concerns like logging, static files, and parsing before passing to the router." },
       { name: "Router", color: "#2563eb", examples: ["get \"/users\", UserController, :index", "resources \"/posts\", PostController", "pipe_through :browser"], description: "Maps URL patterns and HTTP methods to controller actions. Groups routes into scopes with shared pipelines." },
