@@ -1,4 +1,5 @@
 import type { TopicContent } from "@/lib/types";
+import Animation07GenServerCallCast from "@/components/animations/Animation07GenServerCallCast";
 
 const genserver: TopicContent = {
   meta: {
@@ -29,6 +30,8 @@ const genserver: TopicContent = {
   },
 
   visuals: {
+    animation: Animation07GenServerCallCast,
+    animationDuration: 14,
     dataTypes: [
       { name: "GenServer.call", color: "#6b46c1", examples: ["GenServer.call(pid, :get)", "→ handle_call(:get, from, state)", "→ {:reply, answer, state}"], description: "Synchronous request. The caller blocks until the server replies. Use for queries and operations where you need confirmation." },
       { name: "GenServer.cast", color: "#2563eb", examples: ["GenServer.cast(pid, {:put, k, v})", "→ handle_cast({:put, k, v}, state)", "→ {:noreply, new_state}"], description: "Asynchronous request. Fire-and-forget. Use for commands where you don't need a response." },
