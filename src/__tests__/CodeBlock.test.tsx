@@ -1,5 +1,6 @@
-import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, act, fireEvent, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import CodeBlock from "@/components/ui/CodeBlock";
 
 describe("CodeBlock", () => {
@@ -46,5 +47,62 @@ describe("CodeBlock", () => {
     expect(code?.innerHTML).toContain(":ok");
     // Should be trimmed — no leading spaces in the highlighted output
     expect(code?.innerHTML).not.toMatch(/^\s/);
+  });
+
+  describe("copy button", () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+
+    beforeEach(() => {
+      writeText.mockClear();
+      Object.defineProperty(Navigator.prototype, "clipboard", {
+        get: () => ({ writeText }),
+        configurable: true,
+      });
+    });
+
+    it("renders a copy button", () => {
+      render(<CodeBlock code=":ok" />);
+      expect(screen.getByRole("button", { name: "Copy code" })).toBeInTheDocument();
+    });
+
+    it("copies trimmed code to clipboard on click", async () => {
+      render(<CodeBlock code="  hello  " />);
+
+      await act(async () => {
+        fireEvent.click(screen.getByRole("button", { name: "Copy code" }));
+        await Promise.resolve();
+      });
+
+      expect(writeText).toHaveBeenCalledWith("hello");
+    });
+
+    it("shows 'Copied!' after clicking", async () => {
+      const user = userEvent.setup();
+      render(<CodeBlock code=":ok" />);
+
+      const button = screen.getByRole("button", { name: "Copy code" });
+      expect(button).toHaveTextContent("Copy");
+
+      await user.click(button);
+      expect(button).toHaveTextContent("Copied!");
+    });
+
+    it("reverts to 'Copy' after timeout", async () => {
+      vi.useFakeTimers();
+      render(<CodeBlock code=":ok" />);
+
+      const button = screen.getByRole("button", { name: "Copy code" });
+
+      await act(async () => {
+        fireEvent.click(button);
+        await Promise.resolve();
+      });
+      expect(button).toHaveTextContent("Copied!");
+
+      act(() => { vi.advanceTimersByTime(2000); });
+      expect(button).toHaveTextContent("Copy");
+
+      vi.useRealTimers();
+    });
   });
 });
