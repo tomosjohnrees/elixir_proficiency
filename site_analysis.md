@@ -25,30 +25,6 @@ Topics to cover:
 - Designing public APIs for modules
 - The "transform data through a pipeline" mindset vs "mutate objects"
 
-### 2. Missing Core Topics
-
-Within the 25 slots, some notable absences:
-
-- **ETS (Erlang Term Storage)** — In-memory storage used everywhere in production Elixir. A key reason you can avoid external caches like Redis for many use cases. Covers `:ets.new/2`, table types (set, ordered_set, bag, duplicate_bag), concurrent access, and match specifications.
-
-- **Typespecs & Dialyzer** — `@spec`, `@type`, `@callback`, `@opaque` and static analysis with Dialyzer. Important for professional Elixir: documents intent, catches bugs at compile time, and improves editor tooling. Also covers Gradualixer and newer tools.
-
-- **Debugging & Tooling** — The practical day-to-day tools that learners actually need:
-  - `IO.inspect/2` with `:label` option for pipeline debugging
-  - `dbg/2` (Elixir 1.14+) for pipeline-aware debugging
-  - IEx helpers (`.iex.exs`, `h/1`, `i/1`, `recompile/0`)
-  - `:observer.start()` for visualizing supervision trees and process state
-  - `mix xref` for understanding module dependencies
-  - `:sys.get_state/1` for inspecting GenServer state
-  - Erlang's `:debugger` and `:recon`
-
-- **Guards in Depth** — Touched on in pattern matching but deserves deeper treatment:
-  - Guard-safe expressions and why arbitrary functions aren't allowed
-  - `is_*` type checking functions
-  - Custom guards with `defguard/2`
-  - Combining guards with `when ... and ...` / `when ... or ...`
-  - Common gotcha: `when is_map(x)` matches structs too
-
 ### 3. Common Mistakes / Gotchas (Per-Topic Addition)
 
 A "Watch Out For" section in each topic would be very high value. Many Elixir surprises are well-known to experienced developers but trip up every learner. Examples by topic:
@@ -159,24 +135,3 @@ No way to search across topics. If a user remembers something about "pin operato
 ### 9. Spaced Repetition / Review
 
 Quiz questions are one-and-done. A spaced repetition system that resurfaces questions the user got wrong at increasing intervals would dramatically improve long-term retention. Even a simple "review missed questions" feature would help.
-
----
-
-## Quick Wins (Ranked by Impact/Effort)
-
-| Idea | Impact | Effort | Notes |
-|------|--------|--------|-------|
-| Common mistakes/gotchas per topic | Very High | Low | Add a `gotchas` field to `TopicContent`, render as a callout section |
-| Copy button on code blocks | Medium | Very Low | Small UI addition to `CodeBlock` component |
-| Idiomatic Elixir topic | Very High | Medium | Same workflow as any new topic via `/add-topic` |
-| Progress tracking (localStorage) | High | Medium | Track section views, quiz scores, practice completion |
-| Topic prerequisite links | Medium | Low | Add `prerequisites` field to topic registry |
-| "Coming from X" callouts | Medium | Low-Medium | Collapsible section per topic |
-| Debugging & Tooling topic | High | Medium | Practical day-to-day value |
-| Search | Medium | Medium | Client-side index of all topic content |
-| Concept map on home page | Medium | Medium | Interactive SVG showing topic relationships |
-| ETS topic | High | Medium | Core production Elixir knowledge |
-| Typespecs topic | Medium | Medium | Professional Elixir practice |
-| Guards deep-dive topic | Medium | Medium | Could be added to existing pattern matching or standalone |
-| Spaced repetition for quizzes | High | High | Requires more sophisticated state management |
-| Livebook integration | Medium | High | External dependency, hosting considerations |

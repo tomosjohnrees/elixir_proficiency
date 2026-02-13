@@ -30,5 +30,5 @@ export const topicRegistry: TopicMeta[] = [
   { slug: "ets", title: "ETS (Erlang Term Storage)", description: "In-memory storage, table types, concurrent access, and match specifications", number: 27, active: true },
   { slug: "typespecs-and-dialyzer", title: "Typespecs & Dialyzer", description: "@spec, @type, @callback, and static analysis with Dialyzer", number: 28, active: true },
   { slug: "debugging-and-tooling", title: "Debugging & Tooling", description: "IO.inspect, dbg, IEx helpers, Observer, mix xref, and Erlang debugging tools", number: 29, active: true },
-  { slug: "guards-in-depth", title: "Guards in Depth", description: "Guard-safe expressions, custom guards, combining guards, and common gotchas", number: 30, active: false },
+  { slug: "guards-in-depth", title: "Guards in Depth", description: "Guard-safe expressions, custom guards, combining guards, and common gotchas", number: 30, active: true },
 ];
