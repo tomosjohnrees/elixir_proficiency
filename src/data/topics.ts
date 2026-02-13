@@ -26,7 +26,7 @@ export const topicRegistry: TopicMeta[] = [
   { slug: "liveview", title: "LiveView", description: "Real-time server-rendered UIs with LiveView", number: 23, active: true },
   { slug: "concurrency-patterns", title: "Concurrency Patterns", description: "Tasks, agents, and common concurrent patterns", number: 24, active: true },
   { slug: "deployment", title: "Releases & Deployment", description: "Mix releases, configuration, and deployment strategies", number: 25, active: true },
-  { slug: "idiomatic-elixir", title: "Idiomatic Elixir & Common Patterns", description: "Pipe-friendly design, tagged tuples, naming conventions, and the pipeline mindset", number: 26, active: false },
+  { slug: "idiomatic-elixir", title: "Idiomatic Elixir & Common Patterns", description: "Pipe-friendly design, tagged tuples, naming conventions, and the pipeline mindset", number: 26, active: true },
   { slug: "ets", title: "ETS (Erlang Term Storage)", description: "In-memory storage, table types, concurrent access, and match specifications", number: 27, active: false },
   { slug: "typespecs-and-dialyzer", title: "Typespecs & Dialyzer", description: "@spec, @type, @callback, and static analysis with Dialyzer", number: 28, active: false },
   { slug: "debugging-and-tooling", title: "Debugging & Tooling", description: "IO.inspect, dbg, IEx helpers, Observer, mix xref, and Erlang debugging tools", number: 29, active: true },

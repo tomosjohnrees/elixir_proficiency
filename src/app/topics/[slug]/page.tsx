@@ -35,6 +35,7 @@ const topicModules: Record<string, () => Promise<{ default: TopicContent }>> = {
   "concurrency-patterns": () => import("@/data/topics/concurrency-patterns"),
   "deployment": () => import("@/data/topics/deployment"),
   "debugging-and-tooling": () => import("@/data/topics/debugging-and-tooling"),
+  "idiomatic-elixir": () => import("@/data/topics/idiomatic-elixir"),
 };
 
 interface TopicPageProps {
