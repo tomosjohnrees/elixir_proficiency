@@ -1,11 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { topicRegistry } from "@/data/topics";
 import { fadeUp, stagger } from "@/lib/motion";
+import ConceptMap from "@/components/concept-map/ConceptMap";
 
 export default function Home() {
+  const [view, setView] = useState<"grid" | "map">("grid");
+
   return (
     <main className="max-w-5xl mx-auto px-4 py-12">
       <motion.div
@@ -46,57 +50,85 @@ export default function Home() {
         </Link>
       </motion.div>
 
-      <motion.div
-        className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-        initial="hidden"
-        animate="visible"
-        variants={stagger}
-      >
-        {topicRegistry.map((topic) => (
-          <motion.div key={topic.slug} variants={fadeUp} className="h-full">
-            {topic.active ? (
-              <motion.div
-                className="h-full"
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              >
-                <Link
-                  href={`/topics/${topic.slug}`}
-                  className="block h-full rounded-xl border border-border p-5 hover:border-accent hover:shadow-md transition-all bg-surface group"
+      <div className="flex items-center justify-end gap-2 mb-4">
+        <span className="text-sm text-muted">View:</span>
+        <button
+          onClick={() => setView("grid")}
+          className={`px-3 py-1 text-sm rounded-lg border transition-colors ${
+            view === "grid"
+              ? "border-accent text-accent bg-accent-faint"
+              : "border-border text-muted hover:border-accent/50"
+          }`}
+        >
+          Grid
+        </button>
+        <button
+          onClick={() => setView("map")}
+          className={`px-3 py-1 text-sm rounded-lg border transition-colors ${
+            view === "map"
+              ? "border-accent text-accent bg-accent-faint"
+              : "border-border text-muted hover:border-accent/50"
+          }`}
+        >
+          Concept Map
+        </button>
+      </div>
+
+      {view === "map" ? (
+        <ConceptMap />
+      ) : (
+        <motion.div
+          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          initial="hidden"
+          animate="visible"
+          variants={stagger}
+        >
+          {topicRegistry.map((topic) => (
+            <motion.div key={topic.slug} variants={fadeUp} className="h-full">
+              {topic.active ? (
+                <motion.div
+                  className="h-full"
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
                 >
+                  <Link
+                    href={`/topics/${topic.slug}`}
+                    className="block h-full rounded-xl border border-border p-5 hover:border-accent hover:shadow-md transition-all bg-surface group"
+                  >
+                    <div className="flex items-start gap-3">
+                      <span className="text-sm font-mono text-accent font-bold mt-0.5">
+                        {String(topic.number).padStart(2, "0")}
+                      </span>
+                      <div>
+                        <h2 className="font-semibold group-hover:text-accent transition-colors">
+                          {topic.title}
+                        </h2>
+                        <p className="text-sm text-muted mt-1">{topic.description}</p>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              ) : (
+                <div className="block h-full rounded-xl border border-border p-5 opacity-50 bg-surface">
                   <div className="flex items-start gap-3">
-                    <span className="text-sm font-mono text-accent font-bold mt-0.5">
+                    <span className="text-sm font-mono text-muted font-bold mt-0.5">
                       {String(topic.number).padStart(2, "0")}
                     </span>
                     <div>
-                      <h2 className="font-semibold group-hover:text-accent transition-colors">
-                        {topic.title}
-                      </h2>
+                      <h2 className="font-semibold">{topic.title}</h2>
                       <p className="text-sm text-muted mt-1">{topic.description}</p>
+                      <span className="inline-block text-xs font-medium text-muted mt-2 px-2 py-0.5 rounded-full bg-surface-2">
+                        Coming Soon
+                      </span>
                     </div>
                   </div>
-                </Link>
-              </motion.div>
-            ) : (
-              <div className="block h-full rounded-xl border border-border p-5 opacity-50 bg-surface">
-                <div className="flex items-start gap-3">
-                  <span className="text-sm font-mono text-muted font-bold mt-0.5">
-                    {String(topic.number).padStart(2, "0")}
-                  </span>
-                  <div>
-                    <h2 className="font-semibold">{topic.title}</h2>
-                    <p className="text-sm text-muted mt-1">{topic.description}</p>
-                    <span className="inline-block text-xs font-medium text-muted mt-2 px-2 py-0.5 rounded-full bg-surface-2">
-                      Coming Soon
-                    </span>
-                  </div>
                 </div>
-              </div>
-            )}
-          </motion.div>
-        ))}
-      </motion.div>
+              )}
+            </motion.div>
+          ))}
+        </motion.div>
+      )}
     </main>
   );
 }

@@ -105,3 +105,31 @@ export interface TaggedQuizQuestion extends QuizQuestion {
   topicTitle: string;
   topicNumber: number;
 }
+
+// ─── Topic Relationship Types ────────────────────────────
+
+export type TopicCategory =
+  | "foundations"
+  | "data-processing"
+  | "otp-concurrency"
+  | "abstraction"
+  | "ecosystem"
+  | "tooling";
+
+export interface TopicRelationship {
+  from: string;
+  to: string;
+  strength: "strong" | "moderate";
+}
+
+export interface TopicNode {
+  slug: string;
+  category: TopicCategory;
+  x: number;
+  y: number;
+}
+
+export interface TopicGraph {
+  nodes: TopicNode[];
+  edges: TopicRelationship[];
+}

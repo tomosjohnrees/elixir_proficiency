@@ -2,10 +2,12 @@
 
 import { motion } from "motion/react";
 import SectionNav from "./SectionNav";
+import TopicPrerequisites from "@/components/topic-sections/TopicPrerequisites";
 
 interface TopicLayoutProps {
   title: string;
   description: string;
+  slug?: string;
   hasGotchas?: boolean;
   children: React.ReactNode;
 }
@@ -13,6 +15,7 @@ interface TopicLayoutProps {
 export default function TopicLayout({
   title,
   description,
+  slug,
   hasGotchas,
   children,
 }: TopicLayoutProps) {
@@ -28,6 +31,7 @@ export default function TopicLayout({
         >
           <h1 className="text-3xl font-bold mb-2">{title}</h1>
           <p className="text-muted text-lg">{description}</p>
+          {slug && <TopicPrerequisites slug={slug} />}
         </motion.div>
         <div className="space-y-16">{children}</div>
       </main>
