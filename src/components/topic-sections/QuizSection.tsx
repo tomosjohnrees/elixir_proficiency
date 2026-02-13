@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useState, useEffect } from "react";
 import type { QuizContent } from "@/lib/types";
 import Quiz from "@/components/ui/Quiz";
 
@@ -20,11 +20,13 @@ interface QuizSectionProps {
 }
 
 export default function QuizSection({ content }: QuizSectionProps) {
-  const selected = useMemo(
-    () => shuffleAndPick(content.questions, QUIZ_DISPLAY_COUNT),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+  const [selected, setSelected] = useState(() =>
+    content.questions.slice(0, QUIZ_DISPLAY_COUNT)
   );
+
+  useEffect(() => {
+    setSelected(shuffleAndPick(content.questions, QUIZ_DISPLAY_COUNT));
+  }, [content.questions]);
 
   return (
     <section id="quiz" className="scroll-mt-28">
