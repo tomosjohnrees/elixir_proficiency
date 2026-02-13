@@ -1,4 +1,5 @@
 import type { TopicContent } from "@/lib/types";
+import Animation23FanOutFanIn from "@/components/animations/Animation23FanOutFanIn";
 
 const concurrencyPatterns: TopicContent = {
   meta: {
@@ -29,6 +30,8 @@ const concurrencyPatterns: TopicContent = {
   },
 
   visuals: {
+    animation: Animation23FanOutFanIn,
+    animationDuration: 17,
     dataTypes: [
       { name: "Task.async/1", color: "#2563eb", examples: ["task = Task.async(fn -> ... end)", "result = Task.await(task)", "Task.await(task, 10_000)"], description: "Spawns a linked process that runs a function. Returns a task struct you can await for the result. Crashes propagate to the caller." },
       { name: "Task.async_stream/3", color: "#059669", examples: ["Task.async_stream(urls, &fetch/1)", "max_concurrency: 5", "ordered: true"], description: "Processes a collection concurrently with backpressure. Controls parallelism with max_concurrency. Returns a stream of results." },
