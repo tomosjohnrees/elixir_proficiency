@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/enumerables";
+import gotchas from "./gotchas/enumerables";
 import Animation02EagerVsLazy from "@/components/animations/Animation02EagerVsLazy";
 
 const enumerables: TopicContent = {
@@ -243,6 +244,8 @@ fibonacci |> Enum.take(10)
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

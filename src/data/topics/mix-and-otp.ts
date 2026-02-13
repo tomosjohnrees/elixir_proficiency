@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/mix-and-otp";
+import gotchas from "./gotchas/mix-and-otp";
 
 const mixAndOtp: TopicContent = {
   meta: {
@@ -260,6 +261,8 @@ $ mix greet Elixir
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

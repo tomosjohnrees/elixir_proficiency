@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/sigils";
+import gotchas from "./gotchas/sigils";
 
 const sigils: TopicContent = {
   meta: {
@@ -247,6 +248,8 @@ import MySigils
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

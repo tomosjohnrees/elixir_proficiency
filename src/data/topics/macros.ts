@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/macros";
+import gotchas from "./gotchas/macros";
 
 const macros: TopicContent = {
   meta: {
@@ -300,6 +301,8 @@ end`,
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

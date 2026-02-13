@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/pattern-matching";
+import gotchas from "./gotchas/pattern-matching";
 import Animation05PatternMatch from "@/components/animations/Animation05PatternMatch";
 import Animation13HeadTail from "@/components/animations/Animation13HeadTail";
 
@@ -223,6 +224,8 @@ body    # => "hello"`,
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

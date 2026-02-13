@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/ecto-basics";
+import gotchas from "./gotchas/ecto-basics";
 
 const ectoBasics: TopicContent = {
   meta: {
@@ -270,6 +271,8 @@ end
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

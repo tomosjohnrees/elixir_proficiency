@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/liveview";
+import gotchas from "./gotchas/liveview";
 import Animation04LiveViewLifecycle from "@/components/animations/Animation04LiveViewLifecycle";
 
 const liveview: TopicContent = {
@@ -311,6 +312,8 @@ end
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

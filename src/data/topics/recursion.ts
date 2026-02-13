@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/recursion";
+import gotchas from "./gotchas/recursion";
 import Animation01Recursion from "@/components/animations/Animation01Recursion";
 
 const recursion: TopicContent = {
@@ -210,6 +211,8 @@ Tree.depth(tree)  # => 3`,
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

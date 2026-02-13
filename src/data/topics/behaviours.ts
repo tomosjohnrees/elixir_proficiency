@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/behaviours";
+import gotchas from "./gotchas/behaviours";
 
 const behaviours: TopicContent = {
   meta: {
@@ -303,6 +304,8 @@ end
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

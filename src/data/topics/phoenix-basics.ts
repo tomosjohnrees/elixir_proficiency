@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/phoenix-basics";
+import gotchas from "./gotchas/phoenix-basics";
 import Animation09PhoenixRequest from "@/components/animations/Animation09PhoenixRequest";
 import Animation32PlugHalt from "@/components/animations/Animation32PlugHalt";
 
@@ -314,6 +315,8 @@ end`,
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

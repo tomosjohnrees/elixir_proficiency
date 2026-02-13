@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/guards-in-depth";
+import gotchas from "./gotchas/guards-in-depth";
 
 const guardsInDepth: TopicContent = {
   meta: {
@@ -263,6 +264,8 @@ def head_of(_), do: :not_a_list
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

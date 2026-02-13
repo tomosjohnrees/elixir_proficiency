@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/typespecs-and-dialyzer";
+import gotchas from "./gotchas/typespecs-and-dialyzer";
 
 const typespecsAndDialyzer: TopicContent = {
   meta: {
@@ -250,6 +251,8 @@ end`,
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

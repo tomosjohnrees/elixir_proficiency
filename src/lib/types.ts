@@ -80,11 +80,22 @@ export interface PracticeContent {
   problems: PracticeProblem[];
 }
 
+export interface Gotcha {
+  title: string;
+  description: string;
+  code?: string;
+}
+
+export interface GotchasContent {
+  items: Gotcha[];
+}
+
 export interface TopicContent {
   meta: TopicMeta;
   eli5: ELI5Content;
   visuals: VisualsContent;
   deepDive: DeepDiveContent;
+  gotchas?: GotchasContent;
   quiz: QuizContent;
   practice: PracticeContent;
 }

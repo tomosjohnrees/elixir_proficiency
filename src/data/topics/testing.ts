@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/testing";
+import gotchas from "./gotchas/testing";
 
 const testing: TopicContent = {
   meta: {
@@ -296,6 +297,8 @@ end
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/supervisors";
+import gotchas from "./gotchas/supervisors";
 import Animation03SupervisorStrategies from "@/components/animations/Animation03SupervisorStrategies";
 
 const supervisors: TopicContent = {
@@ -300,6 +301,8 @@ end
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

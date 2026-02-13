@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/genserver";
+import gotchas from "./gotchas/genserver";
 import Animation07GenServerCallCast from "@/components/animations/Animation07GenServerCallCast";
 
 const genserver: TopicContent = {
@@ -323,6 +324,8 @@ ChatRoom.members(room)  # => ["José"]`,
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

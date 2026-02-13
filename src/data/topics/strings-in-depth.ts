@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/strings-in-depth";
+import gotchas from "./gotchas/strings-in-depth";
 
 const stringsInDepth: TopicContent = {
   meta: {
@@ -229,6 +230,8 @@ Regex.scan(~r/\\d+/, "abc123def456")
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/basic-data-types";
+import gotchas from "./gotchas/basic-data-types";
 
 const basicDataTypes: TopicContent = {
   meta: {
@@ -241,6 +242,8 @@ x > 0 and x < 10  # => true`,
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

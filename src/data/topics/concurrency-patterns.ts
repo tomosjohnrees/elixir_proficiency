@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/concurrency-patterns";
+import gotchas from "./gotchas/concurrency-patterns";
 import Animation23FanOutFanIn from "@/components/animations/Animation23FanOutFanIn";
 
 const concurrencyPatterns: TopicContent = {
@@ -297,6 +298,8 @@ images
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

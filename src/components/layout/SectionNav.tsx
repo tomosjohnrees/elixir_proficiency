@@ -1,17 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { motion } from "motion/react";
 
-const SECTIONS = [
+const BASE_SECTIONS = [
   { id: "eli5", label: "ELI5" },
   { id: "visuals", label: "Visuals" },
   { id: "deep-dive", label: "Deep Dive" },
+];
+
+const POST_SECTIONS = [
   { id: "quiz", label: "Quiz" },
   { id: "practice", label: "Practice" },
 ];
 
-export default function SectionNav() {
+interface SectionNavProps {
+  hasGotchas?: boolean;
+}
+
+export default function SectionNav({ hasGotchas }: SectionNavProps) {
+  const SECTIONS = useMemo(() => {
+    const sections = [...BASE_SECTIONS];
+    if (hasGotchas) {
+      sections.push({ id: "gotchas", label: "Gotchas" });
+    }
+    sections.push(...POST_SECTIONS);
+    return sections;
+  }, [hasGotchas]);
   const [active, setActive] = useState("eli5");
 
   useEffect(() => {

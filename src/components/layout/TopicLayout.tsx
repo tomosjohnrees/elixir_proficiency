@@ -6,17 +6,19 @@ import SectionNav from "./SectionNav";
 interface TopicLayoutProps {
   title: string;
   description: string;
+  hasGotchas?: boolean;
   children: React.ReactNode;
 }
 
 export default function TopicLayout({
   title,
   description,
+  hasGotchas,
   children,
 }: TopicLayoutProps) {
   return (
     <>
-      <SectionNav />
+      <SectionNav hasGotchas={hasGotchas} />
       <main className="max-w-5xl mx-auto px-4 pt-8 pb-24">
         <motion.div
           className="mb-10"

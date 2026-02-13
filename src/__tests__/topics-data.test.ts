@@ -1780,3 +1780,54 @@ describe("guardsInDepth topic content", () => {
     });
   });
 });
+
+describe("gotchas content across all topics", () => {
+  const allTopics = [
+    basicDataTypes,
+    patternMatching,
+    listsAndTuples,
+    mapsAndStructs,
+    controlFlow,
+    functionsAndModules,
+    recursion,
+    enumerables,
+    stringsInDepth,
+    processes,
+    genserver,
+    supervisors,
+    mixAndOtp,
+    testing,
+    protocols,
+    behaviours,
+    macros,
+    errorHandling,
+    comprehensions,
+    sigils,
+    ectoBasics,
+    phoenixBasics,
+    liveview,
+    concurrencyPatterns,
+    deployment,
+    debuggingAndTooling,
+    idiomaticElixir,
+    ets,
+    typespecsAndDialyzer,
+    guardsInDepth,
+  ];
+
+  allTopics.forEach((topic) => {
+    describe(`${topic.meta.title} gotchas`, () => {
+      it("has gotchas with at least 3 items", () => {
+        expect(topic.gotchas).toBeDefined();
+        expect(topic.gotchas!.items.length).toBeGreaterThanOrEqual(3);
+      });
+
+      it("has valid gotcha structure", () => {
+        topic.gotchas!.items.forEach((gotcha) => {
+          expect(gotcha.title).toBeTruthy();
+          expect(gotcha.description).toBeTruthy();
+        });
+      });
+    });
+  });
+});

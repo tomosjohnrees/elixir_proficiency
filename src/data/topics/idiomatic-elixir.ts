@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/idiomatic-elixir";
+import gotchas from "./gotchas/idiomatic-elixir";
 
 const idiomaticElixir: TopicContent = {
   meta: {
@@ -304,6 +305,8 @@ Enum.sum(list)
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

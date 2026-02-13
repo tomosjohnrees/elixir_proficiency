@@ -5,6 +5,7 @@ import VisualsSection from "@/components/topic-sections/VisualsSection";
 import DeepDiveSection from "@/components/topic-sections/DeepDiveSection";
 import QuizSection from "@/components/topic-sections/QuizSection";
 import PracticeSection from "@/components/topic-sections/PracticeSection";
+import GotchasSection from "@/components/topic-sections/GotchasSection";
 
 import type { TopicContent } from "@/lib/types";
 
@@ -54,10 +55,11 @@ export default async function TopicPage({ params }: TopicPageProps) {
   const { default: topic } = await loader();
 
   return (
-    <TopicLayout title={topic.meta.title} description={topic.meta.description}>
+    <TopicLayout title={topic.meta.title} description={topic.meta.description} hasGotchas={!!topic.gotchas}>
       <ELI5Section content={topic.eli5} />
       <VisualsSection content={topic.visuals} />
       <DeepDiveSection content={topic.deepDive} />
+      {topic.gotchas && <GotchasSection content={topic.gotchas} />}
       <QuizSection content={topic.quiz} />
       <PracticeSection content={topic.practice} />
     </TopicLayout>

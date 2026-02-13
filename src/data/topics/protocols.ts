@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/protocols";
+import gotchas from "./gotchas/protocols";
 
 const protocols: TopicContent = {
   meta: {
@@ -246,6 +247,8 @@ Enumerable.__protocol__(:impls)
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

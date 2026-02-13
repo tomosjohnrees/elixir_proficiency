@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/error-handling";
+import gotchas from "./gotchas/error-handling";
 
 const errorHandling: TopicContent = {
   meta: {
@@ -318,6 +319,8 @@ Supervisor.start_link(children, strategy: :one_for_one)
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

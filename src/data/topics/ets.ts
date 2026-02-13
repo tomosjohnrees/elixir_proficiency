@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/ets";
+import gotchas from "./gotchas/ets";
 
 const ets: TopicContent = {
   meta: {
@@ -300,6 +301,8 @@ total = :ets.foldl(
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

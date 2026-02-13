@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/processes";
+import gotchas from "./gotchas/processes";
 import Animation06MessagePassing from "@/components/animations/Animation06MessagePassing";
 
 const processes: TopicContent = {
@@ -275,6 +276,8 @@ Process.alive?(self())  # => true`,
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

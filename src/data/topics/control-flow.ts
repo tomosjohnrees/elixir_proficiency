@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/control-flow";
+import gotchas from "./gotchas/control-flow";
 import Animation10WithChain from "@/components/animations/Animation10WithChain";
 
 const controlFlow: TopicContent = {
@@ -214,6 +215,8 @@ String.upcase(if true, do: "yes", else: "no")
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

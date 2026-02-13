@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/debugging-and-tooling";
+import gotchas from "./gotchas/debugging-and-tooling";
 
 const debuggingAndTooling: TopicContent = {
   meta: {
@@ -264,6 +265,8 @@ Process.list() |> length()     # Total process count
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

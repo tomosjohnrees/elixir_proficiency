@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/comprehensions";
+import gotchas from "./gotchas/comprehensions";
 
 const comprehensions: TopicContent = {
   meta: {
@@ -214,6 +215,8 @@ for <<byte <- "Hi">>, into: "", do: Integer.to_string(byte, 16)
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

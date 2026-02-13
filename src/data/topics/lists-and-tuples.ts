@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/lists-and-tuples";
+import gotchas from "./gotchas/lists-and-tuples";
 import Animation08StructuralSharing from "@/components/animations/Animation08StructuralSharing";
 
 const listsAndTuples: TopicContent = {
@@ -238,6 +239,8 @@ Enum.reduce(list, 0, fn x, acc -> x + acc end)   # => 15`,
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

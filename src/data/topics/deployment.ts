@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/deployment";
+import gotchas from "./gotchas/deployment";
 
 const deployment: TopicContent = {
   meta: {
@@ -328,6 +329,8 @@ end`,
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,

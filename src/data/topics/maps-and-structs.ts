@@ -1,5 +1,6 @@
 import type { TopicContent } from "@/lib/types";
 import questions from "./questions/maps-and-structs";
+import gotchas from "./gotchas/maps-and-structs";
 
 const mapsAndStructs: TopicContent = {
   meta: {
@@ -252,6 +253,8 @@ Map.new(opts)   # => %{retries: 3, timeout: 5000}`,
       },
     ],
   },
+
+  gotchas: { items: gotchas },
 
   quiz: {
     questions,
