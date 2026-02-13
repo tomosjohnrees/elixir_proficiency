@@ -1,4 +1,5 @@
 import type { TopicContent } from "@/lib/types";
+import Animation06MessagePassing from "@/components/animations/Animation06MessagePassing";
 
 const processes: TopicContent = {
   meta: {
@@ -29,6 +30,8 @@ const processes: TopicContent = {
   },
 
   visuals: {
+    animation: Animation06MessagePassing,
+    animationDuration: 19,
     dataTypes: [
       { name: "Process", color: "#6b46c1", examples: ["spawn(fn -> ... end)", "self()", "#PID<0.123.0>"], description: "A lightweight, isolated unit of execution. Has its own memory, mailbox, and a unique PID (process identifier)." },
       { name: "Message", color: "#2563eb", examples: ["send(pid, :hello)", "send(pid, {:data, 42})", "{:ok, result}"], description: "Any Elixir term sent to a process mailbox. Messages are copied, not shared. Delivered asynchronously." },
