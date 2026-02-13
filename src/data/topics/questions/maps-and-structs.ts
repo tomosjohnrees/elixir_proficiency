@@ -166,6 +166,39 @@ const questions: QuizQuestion[] = [
     explanation:
       "Map.merge/2 combines two maps, and when there are conflicting keys, the value from the second (right) map wins. So :b gets the value 3 from the second map. If you need custom conflict resolution (like summing values), use Map.merge/3 which accepts a resolver function called for each conflicting key.",
   },
+  {
+    question: "What is the difference between `%MyStruct{s | name: \"new\"}` and `Map.put(s, :name, \"new\")` when s is a struct?",
+    options: [
+      { label: "They are identical in behavior" },
+      { label: "The struct update syntax validates that :name is a valid field at compile time; Map.put does not and can add arbitrary keys", correct: true },
+      { label: "Map.put is faster because it skips validation" },
+      { label: "The struct update syntax works at runtime; Map.put works at compile time" },
+    ],
+    explanation:
+      "The struct update syntax %MyStruct{s | name: \"new\"} checks at compile time that :name is a declared field of MyStruct. If you typo the key (e.g., :nane), you get a compile error. Map.put/3 bypasses this check entirely — it can add any key to the underlying map, even keys that aren't part of the struct definition, which can lead to subtle bugs. Always prefer the struct update syntax for struct modifications.",
+  },
+  {
+    question: "What does `Map.pop(%{a: 1, b: 2}, :a)` return?",
+    options: [
+      { label: "%{b: 2}" },
+      { label: "{1, %{b: 2}}", correct: true },
+      { label: "{:a, 1}" },
+      { label: "It removes :a and returns :ok" },
+    ],
+    explanation:
+      "Map.pop/2 returns a tuple of {value, remaining_map}. It removes the key from the map and returns both the removed value and the new map without that key. If the key doesn't exist, it returns {default, original_map} where default is nil (or a custom value via Map.pop/3). This is useful when you need to both extract and remove a value in one operation.",
+  },
+  {
+    question: "What does `Access.key!(:name)` do differently from `Access.key(:name)`?",
+    options: [
+      { label: "key! is faster because it skips nil checks" },
+      { label: "key! raises a KeyError if the key is missing; key returns nil for missing keys", correct: true },
+      { label: "key! works with structs; key only works with maps" },
+      { label: "There is no difference — the bang is a naming convention only" },
+    ],
+    explanation:
+      "Access.key(:name) returns nil when the key doesn't exist in the nested structure, which can silently hide bugs. Access.key!(:name) raises a KeyError if the key is missing, making failures explicit. Use key! with get_in/put_in/update_in when you're certain the key should exist and want to catch structural errors early rather than propagating nils through your code.",
+  },
 ];
 
 export default questions;

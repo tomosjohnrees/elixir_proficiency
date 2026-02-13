@@ -226,6 +226,39 @@ const questions: QuizQuestion[] = [
     explanation:
       "Elixir will emit a compiler warning about the protocol being reimplemented, and the last defimpl to be compiled wins. This is by design — it allows libraries to provide default implementations that downstream code can override, but the warning ensures you are aware of the conflict.",
   },
+  {
+    question: "What does the `String.Chars` protocol control, and when is it invoked?",
+    options: [
+      { label: "It controls how strings are parsed into data types" },
+      { label: "It defines to_string/1, which is automatically called during string interpolation and by Kernel.to_string/1", correct: true },
+      { label: "It controls how strings are compared with == and ===" },
+      { label: "It defines how strings are split into character lists" },
+    ],
+    explanation:
+      "The String.Chars protocol defines to_string/1, which converts a value to a string. It's called implicitly during string interpolation — when you write \"Hello #{value}\", Elixir calls String.Chars.to_string(value) under the hood. If your custom struct doesn't implement String.Chars and you try to interpolate it, you'll get a Protocol.UndefinedError. Implementing it gives your structs a natural string representation.",
+  },
+  {
+    question: "What does the `Inspect` protocol control?",
+    options: [
+      { label: "How a value is serialized to JSON" },
+      { label: "How a value is displayed by IO.inspect/2 and in IEx — its developer-facing string representation", correct: true },
+      { label: "How a value is stored in ETS tables" },
+      { label: "How a value is logged by the Logger module" },
+    ],
+    explanation:
+      "The Inspect protocol defines how a value is converted to a human-readable string for debugging and development. IO.inspect/2, IEx, and error messages all use it. You can customize it with @derive {Inspect, only: [:name, :email]} to hide sensitive fields like passwords, or implement inspect/2 directly for full control. Unlike String.Chars (for end-user display), Inspect is for developer-facing representation.",
+  },
+  {
+    question: "What happens when you implement a protocol for `Tuple` but pass a struct (which is a map) to the protocol function?",
+    options: [
+      { label: "The Tuple implementation is used because structs contain tuples internally" },
+      { label: "The struct is dispatched to its own struct type implementation, not the Tuple implementation — structs are maps, not tuples", correct: true },
+      { label: "A Protocol.UndefinedError is raised" },
+      { label: "The Map implementation is used as a fallback" },
+    ],
+    explanation:
+      "Protocol dispatch uses a specific type hierarchy. Structs are dispatched to their specific struct module first. If no implementation exists for that struct, Elixir checks for a Map implementation (since structs are maps), then falls back to Any if @fallback_to_any is true. Tuple is a completely separate type — structs are never dispatched to Tuple. Understanding this dispatch chain is key to knowing which implementation will be used.",
+  },
 ];
 
 export default questions;

@@ -166,6 +166,39 @@ const questions: QuizQuestion[] = [
     explanation:
       "The `:uniq` option (added in Elixir 1.12) deduplicates elements based on the value returned by the body. Since 1*1=1, 2*2=4, and 3*3=9 are computed first, when 2 and 1 appear again their squared results (4 and 1) are already seen and are skipped. The result is [1, 4, 9] with duplicates removed.",
   },
+  {
+    question: "What does `for x <- [1, 2, 3], x > 10, do: x` return?",
+    options: [
+      { label: "An empty list []", correct: true },
+      { label: "nil" },
+      { label: "It raises a CondClauseError" },
+      { label: "[1, 2, 3] because the filter is ignored when nothing matches" },
+    ],
+    explanation:
+      "When all elements are filtered out by the guard condition, a comprehension returns an empty list []. No error is raised — this is by design. Comprehensions always return a collection (or the result of a reduce), and an empty collection is a valid result. This is different from Enum.find or case/cond, which may raise errors or return nil when nothing matches.",
+  },
+  {
+    question: "Are variables bound inside a comprehension accessible outside of it?",
+    options: [
+      { label: "Yes — they leak into the outer scope like regular matches" },
+      { label: "No — generator and body variables are scoped to the comprehension", correct: true },
+      { label: "Only if you use the := operator instead of <-" },
+      { label: "Only variables from filters are accessible outside" },
+    ],
+    explanation:
+      "Comprehension generators create a new scope — variables bound in generators (like x in `for x <- list`) are not accessible after the comprehension. This prevents accidental leakage and makes comprehensions self-contained. If you need to use values from a comprehension, you must capture them in the result (the returned list/map) or use :reduce to build up an accumulator.",
+  },
+  {
+    question: "What does this comprehension return?\n\n```elixir\nfor {key, val} <- %{a: 1, b: 2, c: 3},\n    val > 1,\n    key != :c,\n    do: {key, val * 10}\n```",
+    options: [
+      { label: "[b: 20]" },
+      { label: "[{:b, 20}]", correct: true },
+      { label: "%{b: 20}" },
+      { label: "[{:a, 10}, {:b, 20}]" },
+    ],
+    explanation:
+      "Maps are enumerable as {key, value} tuples. The first filter keeps values > 1 (b: 2 and c: 3), and the second filter excludes :c. Only {key: :b, val: 2} survives both filters, producing [{:b, 20}]. Without an :into option, the result is a list of tuples, not a map. Note that [b: 20] and [{:b, 20}] look different but are actually the same — keyword list syntax is sugar for a list of 2-tuples.",
+  },
 ];
 
 export default questions;

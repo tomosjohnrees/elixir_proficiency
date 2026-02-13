@@ -166,6 +166,28 @@ const questions: QuizQuestion[] = [
     explanation:
       "When IEx encounters a list where every element is a valid codepoint (printable character code), it displays the list as a charlist using the ~c sigil syntax. [65, 66, 67] are the codepoints for 'A', 'B', and 'C'. This is a common source of confusion for newcomers. Adding a non-printable integer like 0 to the list — [65, 66, 67, 0] — would cause IEx to display it as a plain integer list instead.",
   },
+  {
+    question: "What is the time complexity of `Enum.at(list, n)` for a linked list?",
+    options: [
+      { label: "O(1) — direct index access" },
+      { label: "O(n) — must traverse from the head to reach index n", correct: true },
+      { label: "O(log n) — binary search" },
+      { label: "O(n²) — nested traversal" },
+    ],
+    explanation:
+      "Elixir lists are singly-linked lists, meaning there's no random access. To reach the nth element, you must follow n pointers from the head. This makes Enum.at/2 O(n). If you frequently need indexed access, consider using a tuple (O(1) access via elem/2) or a map with integer keys. Lists are optimized for sequential access from the head, not random access.",
+  },
+  {
+    question: "What does `List.update_at([10, 20, 30], 1, &(&1 + 5))` return?",
+    options: [
+      { label: "[10, 25, 30]", correct: true },
+      { label: "[15, 20, 30]" },
+      { label: "[10, 20, 35]" },
+      { label: "It raises because lists are immutable" },
+    ],
+    explanation:
+      "List.update_at/3 returns a new list with the element at the given index transformed by the function. Here, index 1 (the value 20) is updated to 20 + 5 = 25. Remember that lists are immutable — the original list is unchanged and a new list is created. This operation is O(n) because the list must be rebuilt up to the updated position.",
+  },
 ];
 
 export default questions;

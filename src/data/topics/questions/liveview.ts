@@ -166,6 +166,50 @@ const questions: QuizQuestion[] = [
     explanation:
       "On an initial page visit, mount/3 is called first to set up initial state, then handle_params/3 is called to process URL parameters, and finally render/1 produces the HTML output. This sequence runs twice — once for the static HTTP response and once when the WebSocket connects. Understanding this order is essential for knowing where to place initialization logic versus URL-dependent data loading.",
   },
+  {
+    question: "What are `phx-hook` attributes used for in LiveView?",
+    options: [
+      { label: "Server-side lifecycle hooks that run before and after each render" },
+      { label: "JavaScript interop — they attach client-side JavaScript hooks to DOM elements for operations that can't be done on the server", correct: true },
+      { label: "CSS animation hooks triggered on element updates" },
+      { label: "Database hooks that trigger queries when assigns change" },
+    ],
+    explanation:
+      "phx-hook connects a DOM element to a client-side JavaScript object that implements lifecycle callbacks like mounted(), updated(), and destroyed(). This is essential for integrating with JavaScript libraries (charts, maps, rich text editors), accessing browser APIs (clipboard, geolocation), or doing DOM manipulation that LiveView can't handle server-side. The hook communicates with the server via pushEvent/handleEvent.",
+  },
+  {
+    question: "How does LiveView handle form validation?",
+    options: [
+      { label: "Client-side JavaScript validates forms before submission" },
+      { label: "The `phx-change` event triggers server-side changeset validation on each input change, with errors pushed back to the client in real time", correct: true },
+      { label: "Forms are only validated on submit — there's no real-time feedback" },
+      { label: "LiveView uses HTML5 constraint validation exclusively" },
+    ],
+    explanation:
+      "LiveView form validation uses phx-change events to send form data to the server on each input change. The server runs the changeset validation pipeline and returns the socket with validation errors in the changeset. The template conditionally renders error messages based on the changeset's errors. This gives users real-time validation feedback without writing any JavaScript, while keeping all validation logic on the server.",
+  },
+  {
+    question: "What does `assign_async/3` do in LiveView?",
+    options: [
+      { label: "Assigns a value that will be computed asynchronously in a separate process, with automatic loading/error states", correct: true },
+      { label: "Assigns a value that updates asynchronously via PubSub" },
+      { label: "Delays an assign until the WebSocket connects" },
+      { label: "Creates an assign backed by an async GenServer" },
+    ],
+    explanation:
+      "assign_async/3 spawns an async operation and provides built-in loading/error state management. The assign is wrapped in an AsyncResult struct with :loading, :ok, or :failed states. In your template, you can pattern match on these states to show spinners, data, or error messages. This eliminates the boilerplate of manually spawning tasks, tracking their state, and handling failures for async data loading in LiveView.",
+  },
+  {
+    question: "What is the purpose of `push_event/3` in LiveView?",
+    options: [
+      { label: "It triggers a server-side handle_event callback" },
+      { label: "It sends an event from the server to the client's JavaScript hooks, enabling server-to-client communication", correct: true },
+      { label: "It broadcasts a PubSub event to all connected LiveViews" },
+      { label: "It queues a DOM event for the next render cycle" },
+    ],
+    explanation:
+      "push_event/3 sends a custom event from the server to the client's JavaScript. Client-side hooks listen for these events with this.handleEvent(\"event-name\", callback). This is the complement to pushEvent (client-to-server): together they enable bidirectional communication between LiveView and JavaScript. Common uses include triggering animations, scrolling to elements, updating charts, or copying text to clipboard.",
+  },
 ];
 
 export default questions;

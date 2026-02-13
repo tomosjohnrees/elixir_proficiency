@@ -166,6 +166,39 @@ const questions: QuizQuestion[] = [
     explanation:
       "The list [[1, 2], [3]] has two elements: [1, 2] and [3] — both are lists, not integers. On the first call, h is [1, 2] and the function tries to compute [1, 2] + 0, which raises an ArithmeticError because the + operator doesn't work on lists. This is a common trap — the function expects a flat list of numbers, not a nested list.",
   },
+  {
+    question: "GenServers and other OTP processes use a recursive loop internally. What pattern does this follow?\n\n```elixir\ndef loop(state) do\n  receive do\n    {:get, from} -> send(from, state); loop(state)\n    {:put, new_state} -> loop(new_state)\n  end\nend\n```",
+    options: [
+      { label: "Body recursion — each receive creates a new stack frame" },
+      { label: "Tail recursion — the recursive loop/1 call is the last operation, so the BEAM reuses the stack frame indefinitely", correct: true },
+      { label: "It's not recursion — receive blocks are handled by the scheduler" },
+      { label: "Mutual recursion — receive and loop alternate" },
+    ],
+    explanation:
+      "This receive loop is the fundamental pattern underlying all OTP processes. The recursive call to loop(state) is in tail position (it's the last thing in each clause), so the BEAM reuses the stack frame. This means the process can run forever handling messages without growing its stack. This is exactly how GenServer works internally — handle_call/handle_cast/handle_info are just abstractions over this pattern.",
+  },
+  {
+    question: "When is body recursion actually preferable to tail recursion?",
+    options: [
+      { label: "Never — tail recursion is always better" },
+      { label: "When the recursive structure mirrors the data structure you're building, and the input is reasonably bounded", correct: true },
+      { label: "When you need the function to be faster" },
+      { label: "When you're processing infinite streams" },
+    ],
+    explanation:
+      "Body recursion can produce cleaner, more readable code when building recursive data structures like trees, or when mapping over bounded collections. For example, `[f.(h) | map(t, f)]` is clearer than the tail-recursive equivalent with an accumulator and reverse. For small-to-medium inputs (thousands of elements), the stack depth is fine. Only reach for tail recursion when processing potentially large or unbounded inputs where stack depth matters.",
+  },
+  {
+    question: "What does this function do, and is it tail-recursive?\n\n```elixir\ndef flatten([]), do: []\ndef flatten([head | tail]) when is_list(head) do\n  flatten(head) ++ flatten(tail)\nend\ndef flatten([head | tail]) do\n  [head | flatten(tail)]\nend\n```",
+    options: [
+      { label: "Flattens a nested list; it is tail-recursive because each clause ends with a recursive call" },
+      { label: "Flattens a nested list; it is NOT tail-recursive because the recursive calls are wrapped in ++ and cons operations", correct: true },
+      { label: "Reverses a nested list; it is tail-recursive" },
+      { label: "Removes duplicates from a list; it is body-recursive" },
+    ],
+    explanation:
+      "This function flattens nested lists (e.g., [[1, [2]], 3] becomes [1, 2, 3]). It is body-recursive because: in the second clause, both flatten(head) and flatten(tail) must return before ++ concatenates them; in the third clause, flatten(tail) must return before the cons cell [head | ...] is built. Tree-like structures often resist tail-recursive conversion because they branch into two recursive paths. For deeply nested lists, this could overflow the stack.",
+  },
 ];
 
 export default questions;

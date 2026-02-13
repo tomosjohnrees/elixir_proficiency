@@ -166,6 +166,61 @@ const questions: QuizQuestion[] = [
     explanation:
       "When a GenServer becomes a bottleneck due to sequential message processing, moving read-heavy data into ETS (Erlang Term Storage) is a proven solution. ETS tables allow concurrent reads from any process without serializing through the GenServer. The GenServer can still manage writes to ETS while reads bypass it entirely, dramatically reducing contention and latency.",
   },
+  {
+    question: "What is the purpose of `handle_continue/2` in a GenServer?",
+    options: [
+      { label: "It handles messages when the GenServer resumes from hibernation" },
+      { label: "It runs immediately after init/1 (or other callbacks) without processing any intervening messages from the mailbox", correct: true },
+      { label: "It replaces handle_info for timer-based messages" },
+      { label: "It retries a failed handle_call automatically" },
+    ],
+    explanation:
+      "handle_continue/2 is triggered by returning {:ok, state, {:continue, term}} from init/1 or {:noreply, state, {:continue, term}} from other callbacks. It runs before any other messages in the mailbox are processed, making it ideal for post-initialization work that shouldn't be delayed by queued messages. This solves the common problem of doing expensive setup in init/1, which blocks the process that called start_link.",
+  },
+  {
+    question: "When is `terminate/2` guaranteed to be called in a GenServer?",
+    options: [
+      { label: "Always, whenever the GenServer stops for any reason" },
+      { label: "Only when the GenServer is trapping exits and stops due to a normal or controlled shutdown — not guaranteed on brutal kills", correct: true },
+      { label: "Only when GenServer.stop/1 is called explicitly" },
+      { label: "It's never called automatically — you must invoke it manually" },
+    ],
+    explanation:
+      "terminate/2 is called when the GenServer is shutting down cleanly (normal exit, :shutdown, or trapped exit signals). However, it is NOT called if the process is killed with Process.exit(pid, :kill), if the process crashes and isn't trapping exits, or if the system is shut down abruptly. Never rely on terminate for critical cleanup — use external mechanisms like monitors or database transactions instead.",
+  },
+  {
+    question: "What are the valid return values from `init/1` in a GenServer?",
+    options: [
+      { label: "Only {:ok, state}" },
+      { label: "{:ok, state}, {:ok, state, {:continue, term}}, :ignore, or {:stop, reason}", correct: true },
+      { label: "{:ok, state} or {:error, reason}" },
+      { label: "Any value — it becomes the initial state" },
+    ],
+    explanation:
+      "init/1 can return {:ok, state} to start normally, {:ok, state, {:continue, term}} to start and immediately trigger handle_continue, :ignore to silently not start (the supervisor treats this as a successful start with no process), or {:stop, reason} to abort startup. Notably, {:error, reason} is NOT a valid return — use {:stop, reason} instead to signal failure.",
+  },
+  {
+    question: "What happens when you return `{:noreply, state, :hibernate}` from a GenServer callback?",
+    options: [
+      { label: "The GenServer shuts down after a period of inactivity" },
+      { label: "The GenServer's process performs a full garbage collection and enters a low-memory state until the next message arrives", correct: true },
+      { label: "The GenServer pauses for a default 5-second sleep" },
+      { label: "The GenServer saves its state to disk for crash recovery" },
+    ],
+    explanation:
+      "Returning :hibernate as the last element of a callback's return tuple tells the BEAM to garbage collect the process and reduce its memory footprint until a new message arrives. When a message comes in, the process wakes up and resumes normally. This is useful for GenServers that handle bursts of traffic followed by long idle periods, trading a small CPU cost on wakeup for significant memory savings during hibernation.",
+  },
+  {
+    question: "What is the difference between `GenServer.stop/3` and `Process.exit/2` for terminating a GenServer?",
+    options: [
+      { label: "There is no difference — both terminate the process immediately" },
+      { label: "GenServer.stop sends a synchronous stop request that triggers terminate/2; Process.exit sends an asynchronous signal that may not trigger terminate/2", correct: true },
+      { label: "GenServer.stop works locally only; Process.exit works across nodes" },
+      { label: "Process.exit is deprecated in favor of GenServer.stop" },
+    ],
+    explanation:
+      "GenServer.stop/3 is the clean way to shut down a GenServer — it sends a synchronous message, waits for the server to call terminate/2 with the given reason, and returns :ok. Process.exit/2 sends an asynchronous exit signal. If the GenServer is trapping exits, it receives the signal in handle_info and can decide what to do. If not trapping exits, the process dies without calling terminate/2 (unless the reason is :normal or :shutdown).",
+  },
 ];
 
 export default questions;

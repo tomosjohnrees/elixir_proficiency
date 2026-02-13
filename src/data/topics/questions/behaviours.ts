@@ -166,6 +166,28 @@ const questions: QuizQuestion[] = [
     explanation:
       "Mox generates mock modules that implement the same behaviour as the real dependency. This guarantees that the mock has the exact same function signatures as the real implementation, preventing a common testing pitfall where mocks drift out of sync with the actual interface. The behaviour acts as a single source of truth for the contract.",
   },
+  {
+    question: "What is the difference between `@callback` and `@macrocallback` in a behaviour?",
+    options: [
+      { label: "@callback defines regular function signatures; @macrocallback defines macro signatures that implementing modules must provide", correct: true },
+      { label: "@macrocallback is faster because macros are expanded at compile time" },
+      { label: "@callback is for public functions; @macrocallback is for private functions" },
+      { label: "There is no difference — they are aliases" },
+    ],
+    explanation:
+      "@callback defines function signatures (def), while @macrocallback defines macro signatures (defmacro) that implementing modules must provide. @macrocallback is rare — it's used when a behaviour needs implementing modules to inject code at compile time rather than provide runtime functions. The `use` pattern with __using__/1 is a more common way to achieve compile-time code injection.",
+  },
+  {
+    question: "How does dynamic dispatch work with behaviours in Elixir?",
+    options: [
+      { label: "The BEAM resolves the implementation at compile time based on type annotations" },
+      { label: "You store the implementing module in a variable or config, then call module.callback(args) — dispatch happens at runtime based on the module value", correct: true },
+      { label: "Behaviours use pattern matching on the first argument to dispatch, like protocols" },
+      { label: "Dynamic dispatch isn't possible — you must hardcode the implementing module" },
+    ],
+    explanation:
+      "Unlike protocols (which dispatch on data type), behaviours dispatch on the module itself. You typically store the module name in application config, a function parameter, or state, then call it dynamically: `impl = Application.get_env(:my_app, :storage_impl); impl.store(data)`. The compiler can't verify the call at compile time, but the behaviour contract ensures all implementations have the right functions. This pattern is fundamental for dependency injection and testing with Mox.",
+  },
 ];
 
 export default questions;

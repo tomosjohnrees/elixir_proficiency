@@ -166,6 +166,50 @@ const questions: QuizQuestion[] = [
     explanation:
       "When all operations succeed, Repo.transaction/2 with an Ecto.Multi returns {:ok, map} where the map contains every operation's result keyed by the atom name you gave it. This is powerful because you can immediately destructure the result: `{:ok, %{user: user, profile: profile}} = Repo.transaction(multi)`. On failure, you get {:error, failed_step, failed_value, changes_so_far}.",
   },
+  {
+    question: "What does `Ecto.Query.API.fragment/1` allow you to do?",
+    options: [
+      { label: "Split a query into smaller reusable fragments" },
+      { label: "Inject raw SQL expressions into an Ecto query while still using parameterized values for safety", correct: true },
+      { label: "Create a partial changeset that can be merged later" },
+      { label: "Fragment a large table for distributed queries" },
+    ],
+    explanation:
+      "fragment() lets you embed raw SQL within an Ecto query for database-specific functions that Ecto doesn't wrap natively. For example, `fragment(\"lower(?)\", u.email)` calls the SQL lower() function. The ? placeholders are parameterized (safe from injection). This is your escape hatch when Ecto's query DSL doesn't cover a specific SQL feature, like database-specific JSON operators, full-text search, or window functions.",
+  },
+  {
+    question: "What is the difference between a `join` and a `left_join` in an Ecto query?",
+    options: [
+      { label: "join returns only matching rows from both tables; left_join returns all rows from the left table even if there's no match on the right", correct: true },
+      { label: "join is faster; left_join is more thorough but slower" },
+      { label: "join works with associations; left_join works with raw tables" },
+      { label: "There is no difference — they produce identical results" },
+    ],
+    explanation:
+      "join (inner join) only includes rows where a matching row exists in both tables — if a user has no posts, they're excluded entirely. left_join includes every row from the left table (e.g., users) and fills in nil for right-table columns when there's no match. This is critical when you want to include records that may not have associations: e.g., listing all users with their post counts, including users with zero posts.",
+  },
+  {
+    question: "How do you use a subquery in Ecto?",
+    options: [
+      { label: "Pass a raw SQL string to Repo.query/1" },
+      { label: "Wrap an Ecto.Query with `subquery/1` and use it in a `from` or `join` clause", correct: true },
+      { label: "Subqueries aren't supported — use Ecto.Multi instead" },
+      { label: "Call Repo.all/1 first and pass the result to the outer query" },
+    ],
+    explanation:
+      "Ecto supports subqueries via the subquery/1 function. You build a regular Ecto.Query, wrap it with subquery(), and use it as a source in from or join. For example: `from s in subquery(top_users_query), where: s.score > 100`. The subquery is compiled to a SQL subselect, keeping everything in a single database roundtrip. This is essential for complex aggregations where you need to query the result of another query.",
+  },
+  {
+    question: "How do you implement an upsert (insert or update) in Ecto?",
+    options: [
+      { label: "Use Repo.insert_or_update/2 with a changeset" },
+      { label: "Use Repo.insert/2 with the `on_conflict` and `conflict_target` options", correct: true },
+      { label: "Use Ecto.Multi with both an insert and an update step" },
+      { label: "Use Repo.get_or_insert/2" },
+    ],
+    explanation:
+      "Repo.insert/2 supports upsert via `on_conflict` and `conflict_target` options. For example: `Repo.insert(changeset, on_conflict: :replace_all, conflict_target: :email)` will insert the record or update it if a row with the same email already exists. Note that Repo.insert_or_update/2 is a different function that checks whether the changeset's struct has been persisted (has an id) — it doesn't use database-level conflict detection.",
+  },
 ];
 
 export default questions;

@@ -166,6 +166,50 @@ const questions: QuizQuestion[] = [
     explanation:
       "Macro.expand_once/2 performs exactly one macro expansion step on the given AST, which is useful for debugging macros one step at a time. Macro.expand/2 repeatedly expands until the result is no longer a macro call. Both require a Macro.Env (typically __ENV__) as the second argument to resolve macro definitions in the correct context.",
   },
+  {
+    question: "What is `__ENV__` and when would you use it?",
+    options: [
+      { label: "A runtime map of environment variables (like System.get_env)" },
+      { label: "A compile-time Macro.Env struct containing the current module, function, file, line, and other compilation context", correct: true },
+      { label: "An alias for Application.get_all_env/1" },
+      { label: "A reference to the BEAM VM's runtime environment" },
+    ],
+    explanation:
+      "__ENV__ returns a Macro.Env struct representing the compile-time environment at the point where it's used. It includes __ENV__.module (current module), __ENV__.function (current function or nil), __ENV__.file, __ENV__.line, and more. It's primarily used inside macros and compile-time code to make decisions based on the compilation context. Unlike __CALLER__ (only available in macros), __ENV__ can be used anywhere.",
+  },
+  {
+    question: "What does the `bind_quoted` option do in a `quote` block?",
+    options: [
+      { label: "It creates constant bindings that can't be reassigned" },
+      { label: "It ensures each variable in the keyword list is evaluated once and bound to a hygienically safe name in the quoted code", correct: true },
+      { label: "It binds variables to the caller's scope instead of the macro's scope" },
+      { label: "It quotes the bindings as string literals instead of AST nodes" },
+    ],
+    explanation:
+      "bind_quoted is a safety mechanism that prevents a common macro bug: accidentally evaluating an argument multiple times. With `quote bind_quoted: [x: x]`, the expression x is evaluated once and the result is bound in the quoted code. Without it, if x is an expression like `expensive_call()`, using unquote(x) multiple times would call it multiple times. bind_quoted ensures single evaluation and is considered best practice for most macros.",
+  },
+  {
+    question: "What is the AST representation of a function call like `foo(1, 2)` in Elixir?",
+    options: [
+      { label: "{:call, :foo, [1, 2]}" },
+      { label: "{:foo, [], [1, 2]}", correct: true },
+      { label: "{:apply, :foo, [1, 2]}" },
+      { label: "[:foo, 1, 2]" },
+    ],
+    explanation:
+      "All Elixir AST nodes follow the same three-element tuple format: {name, metadata, arguments}. For foo(1, 2), the AST is {:foo, [], [1, 2]} — the function name as an atom, metadata (empty list here), and the list of arguments. Since 1 and 2 are literals, they represent themselves in the AST. This uniform structure is what makes Elixir's macro system powerful — all code follows the same format, making it easy to pattern match and transform.",
+  },
+  {
+    question: "Why is it recommended to always use `@impl true` when implementing callbacks inside a `__using__` macro?",
+    options: [
+      { label: "It makes the callbacks run faster" },
+      { label: "It's required — the code won't compile without it" },
+      { label: "It catches typos and incorrect arities at compile time, which is especially important since macro-injected code is harder to debug", correct: true },
+      { label: "It prevents the callback from being overridden by the user" },
+    ],
+    explanation:
+      "When a __using__ macro injects callback implementations (like handle_info in a GenServer wrapper), @impl true ensures the compiler verifies that the function actually matches a callback defined by the behaviour. Without @impl, a typo in the function name would silently create a new function instead of implementing the callback. This is doubly important in macros because errors in injected code are harder to trace back to their source.",
+  },
 ];
 
 export default questions;

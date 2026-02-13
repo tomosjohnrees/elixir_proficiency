@@ -166,6 +166,50 @@ const questions: QuizQuestion[] = [
     explanation:
       "This is a subtle point: Task.async creates a linked task, so normally a crash would take down the caller. However, Task.yield_many traps the exit signal internally and reports it as {:exit, reason}. If you weren't using yield_many (or yield), the link would indeed crash the caller. The yield functions handle this case gracefully by catching the exit.",
   },
+  {
+    question: "What is `Registry` in Elixir and when would you use it?",
+    options: [
+      { label: "A database for storing application configuration" },
+      { label: "A process-based key-value store for registering and looking up processes by custom keys, supporting both unique and duplicate registrations", correct: true },
+      { label: "An alternative to ETS for persistent storage" },
+      { label: "A tool for registering modules in the application supervision tree" },
+    ],
+    explanation:
+      "Registry is a local (per-node) process registry that allows you to register processes under arbitrary keys. With unique keys, it acts like a named process registry (alternative to global names). With duplicate keys, it enables pub-sub patterns where multiple processes register under the same key. It's commonly used with DynamicSupervisor to look up dynamically created processes by domain-specific identifiers (e.g., user IDs, room names).",
+  },
+  {
+    question: "Does `Task.async_stream/3` preserve the order of results?",
+    options: [
+      { label: "No — results arrive in the order tasks complete (fastest first)" },
+      { label: "Yes — results are always emitted in the same order as the input enumerable, regardless of task completion order", correct: true },
+      { label: "Only when :ordered option is set to true" },
+      { label: "Only when max_concurrency is set to 1" },
+    ],
+    explanation:
+      "Task.async_stream always returns results in input order by default. Even if task 3 finishes before task 1, the stream emits results in order: 1, 2, 3. This ordering guarantee is convenient but can cause head-of-line blocking: if task 1 is slow, results for tasks 2 and 3 are held back. You can pass `ordered: false` to get results as they complete, which improves throughput when order doesn't matter.",
+  },
+  {
+    question: "What is a `PartitionSupervisor` and when would you use it?",
+    options: [
+      { label: "A supervisor that partitions children across different nodes in a cluster" },
+      { label: "A supervisor that starts N copies of the same child (one per partition) to distribute load and reduce contention on a single process", correct: true },
+      { label: "A supervisor that handles database sharding" },
+      { label: "A variant of DynamicSupervisor that limits the number of children" },
+    ],
+    explanation:
+      "PartitionSupervisor starts multiple instances of a child process and routes messages to a specific partition based on a key (defaulting to self()). This is a simple way to reduce bottlenecks: instead of one GenServer handling all requests, you have N partitions that each handle a subset. The :via tuple `{:via, PartitionSupervisor, {MySup, key}}` routes to the correct partition. This is used internally by Elixir for things like Task.Supervisor.",
+  },
+  {
+    question: "What is the key difference between `Task.async/1` and `Task.start/1`?",
+    options: [
+      { label: "Task.async returns a Task struct you can await for a result; Task.start returns {:ok, pid} and the result is discarded", correct: true },
+      { label: "Task.async runs synchronously; Task.start runs asynchronously" },
+      { label: "Task.async is supervised; Task.start is not" },
+      { label: "There is no difference — they are aliases" },
+    ],
+    explanation:
+      "Task.async/1 creates a task linked to the caller and returns a %Task{} struct that you MUST eventually await or yield (not doing so is a bug — the task sends a message the caller never reads). Task.start/1 spawns a fire-and-forget task that returns {:ok, pid} — the result is discarded and no await is expected. Use async when you need the result, start when you just need the side effect.",
+  },
 ];
 
 export default questions;

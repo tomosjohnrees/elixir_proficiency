@@ -121,8 +121,8 @@ describe("basicDataTypes topic content", () => {
     expect(sectionsWithCode.length).toBe(6);
   });
 
-  it("has 15 quiz questions", () => {
-    expect(basicDataTypes.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(basicDataTypes.quiz.questions.length).toBeGreaterThanOrEqual(15);
     basicDataTypes.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -178,8 +178,8 @@ describe("patternMatching topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(patternMatching.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(patternMatching.quiz.questions.length).toBeGreaterThanOrEqual(15);
     patternMatching.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -235,8 +235,8 @@ describe("listsAndTuples topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(listsAndTuples.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(listsAndTuples.quiz.questions.length).toBeGreaterThanOrEqual(15);
     listsAndTuples.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -291,8 +291,8 @@ describe("mapsAndStructs topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(mapsAndStructs.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(mapsAndStructs.quiz.questions.length).toBeGreaterThanOrEqual(15);
     mapsAndStructs.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -347,8 +347,8 @@ describe("controlFlow topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(controlFlow.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(controlFlow.quiz.questions.length).toBeGreaterThanOrEqual(15);
     controlFlow.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -403,8 +403,8 @@ describe("functionsAndModules topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(functionsAndModules.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(functionsAndModules.quiz.questions.length).toBeGreaterThanOrEqual(15);
     functionsAndModules.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -459,8 +459,8 @@ describe("recursion topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(recursion.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(recursion.quiz.questions.length).toBeGreaterThanOrEqual(15);
     recursion.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -515,8 +515,8 @@ describe("enumerables topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(enumerables.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(enumerables.quiz.questions.length).toBeGreaterThanOrEqual(15);
     enumerables.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -571,8 +571,8 @@ describe("stringsInDepth topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(stringsInDepth.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(stringsInDepth.quiz.questions.length).toBeGreaterThanOrEqual(15);
     stringsInDepth.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -627,8 +627,8 @@ describe("processes topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(processes.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(processes.quiz.questions.length).toBeGreaterThanOrEqual(15);
     processes.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -683,8 +683,8 @@ describe("genserver topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(genserver.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(genserver.quiz.questions.length).toBeGreaterThanOrEqual(15);
     genserver.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -739,8 +739,8 @@ describe("supervisors topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(supervisors.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(supervisors.quiz.questions.length).toBeGreaterThanOrEqual(15);
     supervisors.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -795,8 +795,8 @@ describe("mixAndOtp topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(mixAndOtp.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(mixAndOtp.quiz.questions.length).toBeGreaterThanOrEqual(15);
     mixAndOtp.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -851,8 +851,8 @@ describe("testing topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(testing.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(testing.quiz.questions.length).toBeGreaterThanOrEqual(15);
     testing.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -907,8 +907,8 @@ describe("protocols topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(protocols.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(protocols.quiz.questions.length).toBeGreaterThanOrEqual(15);
     protocols.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -963,8 +963,8 @@ describe("behaviours topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(behaviours.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(behaviours.quiz.questions.length).toBeGreaterThanOrEqual(15);
     behaviours.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -1019,8 +1019,8 @@ describe("macros topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(macros.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(macros.quiz.questions.length).toBeGreaterThanOrEqual(15);
     macros.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -1075,8 +1075,8 @@ describe("errorHandling topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(errorHandling.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(errorHandling.quiz.questions.length).toBeGreaterThanOrEqual(15);
     errorHandling.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -1131,8 +1131,8 @@ describe("comprehensions topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(comprehensions.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(comprehensions.quiz.questions.length).toBeGreaterThanOrEqual(15);
     comprehensions.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -1187,8 +1187,8 @@ describe("sigils topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(sigils.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(sigils.quiz.questions.length).toBeGreaterThanOrEqual(15);
     sigils.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -1243,8 +1243,8 @@ describe("ectoBasics topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(ectoBasics.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(ectoBasics.quiz.questions.length).toBeGreaterThanOrEqual(15);
     ectoBasics.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -1299,8 +1299,8 @@ describe("phoenixBasics topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(phoenixBasics.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(phoenixBasics.quiz.questions.length).toBeGreaterThanOrEqual(15);
     phoenixBasics.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -1355,8 +1355,8 @@ describe("liveview topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(liveview.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(liveview.quiz.questions.length).toBeGreaterThanOrEqual(15);
     liveview.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -1411,8 +1411,8 @@ describe("concurrencyPatterns topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(concurrencyPatterns.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(concurrencyPatterns.quiz.questions.length).toBeGreaterThanOrEqual(15);
     concurrencyPatterns.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);
@@ -1467,8 +1467,8 @@ describe("deployment topic content", () => {
     });
   });
 
-  it("has 15 quiz questions", () => {
-    expect(deployment.quiz.questions).toHaveLength(15);
+  it("has at least 15 quiz questions", () => {
+    expect(deployment.quiz.questions.length).toBeGreaterThanOrEqual(15);
     deployment.quiz.questions.forEach((q) => {
       expect(q.question).toBeTruthy();
       expect(q.options.length).toBeGreaterThanOrEqual(2);

@@ -166,6 +166,39 @@ const questions: QuizQuestion[] = [
     explanation:
       "Every clause of an anonymous function must accept the same number of arguments — fn 1 -> :one; a, b -> :two end is a compile error. With named functions, different arities create entirely different functions (greet/1 vs greet/2), each with their own set of clauses. This distinction trips up many developers coming from other languages.",
   },
+  {
+    question: "What is the difference between `require`, `import`, `alias`, and `use`?",
+    options: [
+      { label: "They are interchangeable — all bring module functions into scope" },
+      { label: "alias creates a shorthand; import brings functions into scope; require makes macros available; use invokes __using__/1 to inject code", correct: true },
+      { label: "alias and import are the same; require and use are the same" },
+      { label: "require is for Erlang modules; import is for Elixir modules; alias is for local modules; use is for libraries" },
+    ],
+    explanation:
+      "Each directive serves a distinct purpose: `alias MyApp.Users` lets you write Users instead of the full name. `import Enum, only: [map: 2]` brings map/2 into local scope so you can call it without Enum prefix. `require Logger` ensures Logger is compiled first so its macros are available. `use GenServer` calls GenServer.__using__/1 to inject boilerplate code via macros. They're not interchangeable — each solves a different problem.",
+  },
+  {
+    question: "What happens if function clauses are defined in the wrong order?\n\n```elixir\ndef process(list) when is_list(list), do: :list\ndef process([]), do: :empty\n```",
+    options: [
+      { label: "Both clauses work correctly — order doesn't matter" },
+      { label: "The second clause is unreachable because the first clause matches all lists, including []", correct: true },
+      { label: "A compile error is raised due to overlapping patterns" },
+      { label: "The second clause takes priority because it's more specific" },
+    ],
+    explanation:
+      "Elixir evaluates function clauses top-to-bottom and picks the first match. Since `is_list([])` returns true, the first clause matches empty lists before the second clause is ever tried. The compiler warns about the unreachable clause. The fix is to put the more specific clause first: define process([]) before process(list) when is_list(list). Clause ordering is critical in Elixir — always go from most specific to most general.",
+  },
+  {
+    question: "What does `defguard` do?",
+    options: [
+      { label: "It defines a function that can only be called inside guard clauses" },
+      { label: "It defines a custom guard macro that can be used in when clauses, composed from existing guard-safe expressions", correct: true },
+      { label: "It makes any function safe to use in guards by wrapping it automatically" },
+      { label: "It defines a module-level validation that runs at compile time" },
+    ],
+    explanation:
+      "defguard creates a named macro that can be used in guard positions (after when). The body must only use guard-safe expressions. For example: `defguard is_positive(x) when is_number(x) and x > 0` lets you write `def process(x) when is_positive(x)`. This promotes code reuse in guards and makes guard conditions more readable. The macro is expanded at compile time into its constituent guard expressions.",
+  },
 ];
 
 export default questions;

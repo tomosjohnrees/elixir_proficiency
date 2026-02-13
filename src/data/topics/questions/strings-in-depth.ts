@@ -166,6 +166,28 @@ const questions: QuizQuestion[] = [
     explanation:
       "The pattern skips the first 4 bytes with `_::binary-size(4)` (matching \"Hell\"), then captures the next 3 bytes into `middle` with `::binary-size(3)` (matching \"o, \"), and the `_::binary` ignores the rest. Binary size offsets are zero-indexed from the current position, so after skipping 4 bytes, you get bytes at positions 4, 5, and 6 — which are \"o\", \",\", and \" \".",
   },
+  {
+    question: "Why are IO lists (iodata) often preferred over string concatenation for building output?",
+    options: [
+      { label: "IO lists are easier to read and debug" },
+      { label: "IO lists avoid copying — they're nested lists of strings/bytes that are flattened by the IO system at write time, avoiding intermediate allocations", correct: true },
+      { label: "IO lists support Unicode while strings don't" },
+      { label: "IO lists are compressed automatically for smaller payloads" },
+    ],
+    explanation:
+      "String concatenation with <> creates a new binary copy each time, which becomes expensive for repeated operations (like building HTML). IO lists like [\"Hello\", \" \", name] are just nested lists that the BEAM's IO subsystem flattens at output time with zero copying. Phoenix templates compile to IO lists internally, which is a major reason for Phoenix's performance. The cost is deferred to a single pass at write time.",
+  },
+  {
+    question: "What does `String.slice(\"hello\", 1..3)` return, and how does it differ from binary_part?",
+    options: [
+      { label: "\"ell\" — String.slice works on grapheme indices; binary_part works on byte offsets", correct: true },
+      { label: "\"ello\" — both functions work identically" },
+      { label: "\"el\" — String.slice is exclusive of the end index" },
+      { label: "104 — it returns the codepoint at that position" },
+    ],
+    explanation:
+      "String.slice/2 operates on grapheme indices (user-perceived characters), making it safe for Unicode text. binary_part/3 operates on raw byte offsets, which is faster but can split multi-byte characters. For ASCII text they produce the same result, but for strings with emoji or accented characters, byte offsets and grapheme indices diverge. Use String.slice for text processing and binary_part only when you know you're working with single-byte encodings or binary protocols.",
+  },
 ];
 
 export default questions;

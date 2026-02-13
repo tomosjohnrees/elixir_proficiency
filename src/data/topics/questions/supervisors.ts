@@ -166,6 +166,61 @@ const questions: QuizQuestion[] = [
     explanation:
       "The max_restarts/max_seconds threshold uses a sliding window. At t=29 when the 5th crash occurs, all 5 crashes (at t=0, t=10, t=20, t=25, t=29) fall within the 30-second window. Since 5 restarts have been attempted within 30 seconds and the limit is 5, the supervisor determines the child is unrecoverable and shuts itself down. The window slides forward in time — it doesn't reset from the first crash.",
   },
+  {
+    question: "What is `child_spec/1` and why is it important?",
+    options: [
+      { label: "A function that returns the module's supervision configuration — it tells the supervisor how to start, restart, and shut down the child", correct: true },
+      { label: "A compile-time macro that validates supervisor configuration" },
+      { label: "A callback that the supervisor calls on each restart to reinitialize state" },
+      { label: "A debugging tool that prints the child process specification" },
+    ],
+    explanation:
+      "child_spec/1 returns a map with keys like :id, :start, :restart, :shutdown, and :type that tells the supervisor everything it needs to know about managing the child. When you write `use GenServer`, a default child_spec/1 is generated automatically. You can override it to customize restart behavior, shutdown timeout, and other options. When adding children to a supervisor, you typically pass the module name, and the supervisor calls Module.child_spec(arg) to get the specification.",
+  },
+  {
+    question: "What is the difference between `:temporary`, `:transient`, and `:permanent` restart strategies?",
+    options: [
+      { label: ":temporary never restarts; :transient restarts on abnormal exit; :permanent always restarts", correct: true },
+      { label: "They control how quickly the child is restarted: immediately, after a delay, or never" },
+      { label: ":temporary and :transient are the same; :permanent adds persistence to disk" },
+      { label: ":temporary restarts once; :transient restarts 3 times; :permanent restarts indefinitely" },
+    ],
+    explanation:
+      ":permanent (the default) restarts the child no matter how it exits — even with :normal. :transient only restarts on abnormal exit (crashes), leaving the child down after :normal or :shutdown exits. :temporary never restarts the child regardless of the exit reason. Choose based on the child's nature: long-running services are :permanent, one-off tasks that should retry on failure are :transient, and fire-and-forget tasks are :temporary.",
+  },
+  {
+    question: "What does `Supervisor.which_children/1` return?",
+    options: [
+      { label: "A list of PIDs of all children" },
+      { label: "A list of tuples containing each child's id, pid (or :restarting/:undefined), type, and modules", correct: true },
+      { label: "A map from child names to their current states" },
+      { label: "The count of running vs crashed children" },
+    ],
+    explanation:
+      "Supervisor.which_children/1 returns a list of {id, child, type, modules} tuples for each child. The child element is the PID if the process is running, :restarting if it's being restarted, or :undefined if it's not started. This is the primary introspection tool for understanding what a supervisor is managing at runtime, useful for debugging and monitoring.",
+  },
+  {
+    question: "You write `children = [{MyGenServer, arg}]` in a supervisor's init/1. How does the supervisor know how to start MyGenServer?",
+    options: [
+      { label: "It calls MyGenServer.start_link(arg) directly" },
+      { label: "It calls MyGenServer.child_spec(arg) to get the full specification, which includes the start function", correct: true },
+      { label: "It looks up MyGenServer in the application config" },
+      { label: "It pattern matches on the module name to determine the start strategy" },
+    ],
+    explanation:
+      "When you pass {MyGenServer, arg} as a child, the supervisor calls MyGenServer.child_spec(arg) to get a map like %{id: MyGenServer, start: {MyGenServer, :start_link, [arg]}, ...}. The :start key tells the supervisor exactly which function to call. This is why `use GenServer` defines a default child_spec/1 — without it, the supervisor wouldn't know how to start your module.",
+  },
+  {
+    question: "What happens if a `:permanent` child's `init/1` returns `:ignore`?",
+    options: [
+      { label: "The supervisor crashes because a permanent child must start successfully" },
+      { label: "The child is recorded but has no running process — the supervisor does not attempt to restart it", correct: true },
+      { label: "The supervisor retries init/1 up to max_restarts times" },
+      { label: "The child is removed from the supervisor's children list" },
+    ],
+    explanation:
+      "When init/1 returns :ignore, start_link returns :ignore and no process is created. The supervisor records the child with pid :undefined but does not treat this as a failure — it won't attempt restarts. This is useful for children that conditionally decide not to start (e.g., a feature is disabled via config). The child specification remains in the supervisor, so it can be restarted later with Supervisor.restart_child/2 if needed.",
+  },
 ];
 
 export default questions;

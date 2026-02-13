@@ -166,6 +166,50 @@ const questions: QuizQuestion[] = [
     explanation:
       "The BEAM uses preemptive scheduling based on reductions (roughly one reduction per function call). After a process consumes its reduction budget (typically around 4000), it's preempted and another process gets to run. This ensures no single process can monopolize the scheduler. Process priority can be configured with Process.flag(:priority, level) using :low, :normal, :high, or :max, though this is rarely needed in practice.",
   },
+  {
+    question: "What does `Process.send_after(self(), :tick, 5000)` do?",
+    options: [
+      { label: "Sends :tick to self() and blocks for 5 seconds waiting for a response" },
+      { label: "Schedules a :tick message to be delivered to the current process after 5 seconds, returning a timer reference", correct: true },
+      { label: "Creates a new process that sends :tick every 5 seconds" },
+      { label: "Sends :tick immediately and waits 5 seconds before continuing execution" },
+    ],
+    explanation:
+      "Process.send_after/3 schedules a message for future delivery without blocking. It returns a timer reference that you can cancel with Process.cancel_timer/1. This is the standard way to implement periodic work in GenServers — in handle_info(:tick, state), do your work and call Process.send_after again to schedule the next tick. It's non-blocking and doesn't require a separate timer process.",
+  },
+  {
+    question: "What does `Process.register(self(), :my_server)` do, and what happens if you call it again with the same name?",
+    options: [
+      { label: "Registers a global name; calling again overwrites the previous registration" },
+      { label: "Registers the process under the atom :my_server; calling again while the name is taken raises an ArgumentError", correct: true },
+      { label: "Creates an alias that other processes can use; multiple processes can share the same name" },
+      { label: "Stores :my_server in the process dictionary for later lookup" },
+    ],
+    explanation:
+      "Process.register/2 associates a globally unique atom name with a PID. After registration, you can use the atom name anywhere a PID is expected — e.g., send(:my_server, msg). Names must be unique: if a process is already registered under that name (even if it's the same process trying to register a second name), an ArgumentError is raised. The name is automatically unregistered when the process dies.",
+  },
+  {
+    question: "Why is `Process.alive?/1` considered unreliable for making decisions?",
+    options: [
+      { label: "It only works for local processes, not remote ones" },
+      { label: "The process could die between the check and your next action, creating a race condition", correct: true },
+      { label: "It returns incorrect results for GenServer processes" },
+      { label: "It blocks until the process responds, which may time out" },
+    ],
+    explanation:
+      "Process.alive?/1 returns true or false at a single point in time, but the process could exit immediately after the check returns true. This creates a TOCTOU (time-of-check-time-of-use) race condition. Instead of checking if a process is alive, use monitors to be notified when it dies, or send a message and handle the case where it's not received. This is a general principle in concurrent programming: prefer reactive approaches (monitors) over polling (alive?).",
+  },
+  {
+    question: "What happens when a process receives a message while it is NOT inside a `receive` block?",
+    options: [
+      { label: "The message is lost" },
+      { label: "The process is interrupted and must handle the message immediately" },
+      { label: "The message is stored in the process mailbox until a receive block is executed", correct: true },
+      { label: "The sender gets an :error return from send/2" },
+    ],
+    explanation:
+      "Messages are always delivered to the process mailbox regardless of whether the process is currently executing a receive block. The mailbox is a queue that accumulates messages until the process explicitly checks it with receive. This decouples message sending from message handling — the sender never blocks, and the receiver processes messages at its own pace.",
+  },
 ];
 
 export default questions;

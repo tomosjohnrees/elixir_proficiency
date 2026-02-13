@@ -166,6 +166,28 @@ const questions: QuizQuestion[] = [
     explanation:
       "Elixir's config system applies settings in order: config.exs (and imported files like prod.exs) at compile time, then runtime.exs at boot time. Later values override earlier ones for the same key. This layering is by design — it lets you set sensible compile-time defaults that can be overridden at runtime. Understanding this precedence order is critical for debugging unexpected configuration values in production.",
   },
+  {
+    question: "What does `bin/my_app eval` do in a Mix release, and how is it different from `bin/my_app rpc`?",
+    options: [
+      { label: "eval starts a temporary instance to run a one-off command; rpc connects to a running instance and executes code inside it", correct: true },
+      { label: "They are the same — both connect to the running instance" },
+      { label: "eval runs Elixir code; rpc runs Erlang code" },
+      { label: "eval is for development; rpc is for production" },
+    ],
+    explanation:
+      "eval boots a fresh, temporary BEAM instance, runs the given code, and exits. It's used for one-off tasks like database migrations that don't need a running application. rpc connects to an already-running release and evaluates code inside that instance, which is useful for inspecting state or running commands on a live system. The key difference: eval starts a new BEAM, rpc communicates with an existing one.",
+  },
+  {
+    question: "Why is a multi-stage Docker build recommended for Elixir releases?",
+    options: [
+      { label: "It makes the build faster by parallelizing compilation" },
+      { label: "It separates the build environment (with Elixir/Erlang, compilers, build tools) from the runtime image, producing a much smaller final image", correct: true },
+      { label: "Docker requires multi-stage builds for BEAM applications" },
+      { label: "It allows hot code upgrades inside the container" },
+    ],
+    explanation:
+      "A multi-stage build uses a large builder image (with Elixir, Erlang, Node.js for asset compilation, etc.) to compile the release, then copies just the release artifacts into a minimal runtime image (like debian-slim or alpine). The final image doesn't need Elixir or the compiler — the release includes ERTS. This can reduce image size from 1GB+ to under 100MB, improving deploy speed and reducing attack surface.",
+  },
 ];
 
 export default questions;

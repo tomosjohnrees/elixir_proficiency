@@ -166,6 +166,28 @@ const questions: QuizQuestion[] = [
     explanation:
       "All apps in an umbrella share the same Elixir version, the same mix.lock, and the same build environment. This simplifies dependency management but means you cannot have one app on a different version of a shared library than another. This coupling is the primary trade-off: you get simpler coordination at the cost of independent versioning and release flexibility.",
   },
+  {
+    question: "What does the `~>` version operator mean in a dependency specification like `{:phoenix, \"~> 1.7.0\"}`?",
+    options: [
+      { label: "Any version greater than 1.7.0" },
+      { label: "Allows patch updates only (>= 1.7.0 and < 1.8.0)", correct: true },
+      { label: "Exactly version 1.7.0 and nothing else" },
+      { label: "The latest version available" },
+    ],
+    explanation:
+      "The ~> operator allows updates only on the rightmost version segment. ~> 1.7.0 means >= 1.7.0 and < 1.8.0 (patch updates only). ~> 1.7 would mean >= 1.7.0 and < 2.0.0 (minor updates allowed). This gives you control over how much your dependencies can change: more specific versions (three segments) are more conservative, while two segments allow minor updates with potentially new features.",
+  },
+  {
+    question: "What is the difference between `config/config.exs` and `config/runtime.exs`?",
+    options: [
+      { label: "config.exs runs at compile time and is baked into the release; runtime.exs runs at boot time and can read environment variables", correct: true },
+      { label: "config.exs is for development; runtime.exs is for production" },
+      { label: "They are the same — runtime.exs is just the new name for config.exs" },
+      { label: "config.exs handles app config; runtime.exs handles system config" },
+    ],
+    explanation:
+      "config.exs (and imported files like dev.exs, prod.exs) is evaluated at compile time. Values are fixed when you build a release. runtime.exs is evaluated at application boot time, making it the correct place for environment variables (System.get_env), secrets, and any configuration that should differ between deployments without recompiling. This distinction is critical for releases: putting DATABASE_URL in config.exs means it's read at build time, not at deploy time.",
+  },
 ];
 
 export default questions;

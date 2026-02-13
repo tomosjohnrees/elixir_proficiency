@@ -166,6 +166,28 @@ const questions: QuizQuestion[] = [
     explanation:
       "The :put_root_layout plug sets the top-level layout that wraps the response. In a typical Phoenix app, the root layout (e.g., Layouts.root) contains the HTML skeleton — doctype, head, body tags, and script includes — while the inner app layout handles page-level structure. This plug ensures every response in the pipeline gets wrapped in the correct outer shell.",
   },
+  {
+    question: "What is the difference between a function plug and a module plug?",
+    options: [
+      { label: "Function plugs are faster; module plugs are slower but more feature-rich" },
+      { label: "A function plug is a function that takes conn and opts; a module plug is a module implementing init/1 and call/2", correct: true },
+      { label: "Function plugs run at compile time; module plugs run at runtime" },
+      { label: "There is no difference — plug always refers to a module" },
+    ],
+    explanation:
+      "A function plug is simply a function with the signature `(conn, opts) -> conn`. A module plug is a module that implements two callbacks: init/1 (called at compile time to pre-process options) and call/2 (called at runtime with the conn and pre-processed options). Module plugs are preferred when the plug needs initialization logic, state, or is complex enough to warrant its own module. Both types are used with the `plug` macro in routers and controllers.",
+  },
+  {
+    question: "What is a Phoenix Context, and why does `mix phx.gen.context` create one?",
+    options: [
+      { label: "A database connection pool configuration" },
+      { label: "A boundary module that encapsulates a business domain, exposing a public API and hiding internal details like schemas and queries", correct: true },
+      { label: "A plug that provides request context to controllers" },
+      { label: "A GenServer that manages application state for a specific feature" },
+    ],
+    explanation:
+      "Phoenix Contexts are modules that group related functionality around a business domain (e.g., Accounts, Catalog, Orders). They provide a public API (like Accounts.create_user/1) while hiding internal implementation details like Ecto schemas, changesets, and queries. This prevents controllers from directly accessing the database and establishes clear boundaries between different parts of your application. It's an architectural pattern, not a framework feature.",
+  },
 ];
 
 export default questions;

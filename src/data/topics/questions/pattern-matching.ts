@@ -166,6 +166,61 @@ const questions: QuizQuestion[] = [
     explanation:
       "The pin operator ^value uses the existing value of 10. The first clause {^value, _} becomes {10, _}, which doesn't match {20, 10} because 20 != 10. The second clause {_, ^value} becomes {_, 10}, which matches because the second element is 10. So :second is returned. This shows how pin operators work inside case clauses — they're evaluated against the variable's value at the time of the case expression.",
   },
+  {
+    question: "What does this binary pattern match bind `rest` to?\n\n```elixir\n<<first_byte, rest::binary>> = \"hello\"\n```",
+    options: [
+      { label: "\"ello\"", correct: true },
+      { label: "[101, 108, 108, 111]" },
+      { label: "\"hello\"" },
+      { label: "A MatchError is raised because strings can't be matched this way" },
+    ],
+    explanation:
+      "Binary pattern matching with <<first_byte, rest::binary>> extracts the first byte (104, the ASCII value of 'h') and binds rest to the remaining binary \"ello\". The ::binary modifier tells Elixir to capture the remaining bytes as a binary (string), rather than just a single byte. This is fundamental for parsing binary protocols and string processing.",
+  },
+  {
+    question: "What does this code return?\n\n```elixir\n\"Hello, \" <> name = \"Hello, World\"\nname\n```",
+    options: [
+      { label: "\"World\"", correct: true },
+      { label: "\"Hello, World\"" },
+      { label: "A MatchError is raised" },
+      { label: "\"Hello, \"" },
+    ],
+    explanation:
+      "The <> operator can be used for pattern matching on string prefixes. The literal \"Hello, \" is matched against the beginning of the string, and the variable name captures the remainder: \"World\". This only works when the left side is a literal string — you cannot use a variable on the left side of <> in a pattern.",
+  },
+  {
+    question: "What happens with this code?\n\n```elixir\n<<char::utf8, rest::binary>> = \"é\"\nchar\n```",
+    options: [
+      { label: "The byte value 195" },
+      { label: "The codepoint 233 (the Unicode value of é)", correct: true },
+      { label: "The string \"é\"" },
+      { label: "A MatchError because é is a multi-byte character" },
+    ],
+    explanation:
+      "The ::utf8 modifier matches a complete UTF-8 codepoint rather than a raw byte. The character é has codepoint 233 and is encoded as two bytes in UTF-8 (195, 169), but ::utf8 decodes them into the single codepoint value 233. Without ::utf8, you'd get just the first byte (195), which isn't a valid character on its own.",
+  },
+  {
+    question: "What does `_ = expensive_function()` do?",
+    options: [
+      { label: "It discards the result without calling the function" },
+      { label: "It calls the function and ignores the result — useful to silence unused-variable warnings", correct: true },
+      { label: "It raises a MatchError" },
+      { label: "It stores the result in a special anonymous variable" },
+    ],
+    explanation:
+      "Matching against _ calls the function and discards the return value. This is commonly used to explicitly acknowledge that you're ignoring a result, which silences compiler warnings. It's also used as an assertion pattern: `{:ok, _} = some_function()` will raise a MatchError if the function doesn't return an :ok tuple, acting as a simple runtime assertion.",
+  },
+  {
+    question: "What does the following function return when called with a map that has extra keys?\n\n```elixir\ndef extract(%{name: name, role: \"admin\"} = user) do\n  {name, map_size(user)}\nend\nextract(%{name: \"Jo\", role: \"admin\", id: 1})\n```",
+    options: [
+      { label: "A MatchError because the map has an extra :id key" },
+      { label: "{\"Jo\", 3}", correct: true },
+      { label: "{\"Jo\", 2}" },
+      { label: "A FunctionClauseError because the pattern doesn't include :id" },
+    ],
+    explanation:
+      "The = operator in a function head lets you both destructure and bind the entire value. The map pattern %{name: name, role: \"admin\"} partially matches (extra keys are fine), binding name to \"Jo\". The = user part binds the complete map to user, which has 3 keys. This pattern is invaluable when you need specific fields AND the whole structure.",
+  },
 ];
 
 export default questions;

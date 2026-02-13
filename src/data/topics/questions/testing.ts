@@ -204,6 +204,28 @@ const questions: QuizQuestion[] = [
     explanation:
       "When you add @tag :capture_log (or set capture_log: true in ExUnit.configure), ExUnit captures all Logger output during that test and suppresses it from the console. This keeps your test output clean when testing code that intentionally logs warnings or errors. The captured output is discarded unless you explicitly use CaptureLog to inspect it.",
   },
+  {
+    question: "How do you run only tests with a specific tag, like `@tag :slow`?",
+    options: [
+      { label: "mix test --tag slow", correct: true },
+      { label: "mix test --filter slow" },
+      { label: "mix test --only @slow" },
+      { label: "Tags are for documentation only — they can't filter tests" },
+    ],
+    explanation:
+      "Tags are a powerful test filtering mechanism. You can include tests with --include tag_name, exclude with --exclude tag_name, and run only tagged tests with --only tag_name. For example, `mix test --only slow` runs only @tag :slow tests. By default, ExUnit excludes no tags. You can also configure default exclusions in test_helper.exs with ExUnit.configure(exclude: [:slow]) to skip slow tests by default and only run them on demand.",
+  },
+  {
+    question: "What does `assert_receive :message, 1000` do in an ExUnit test?",
+    options: [
+      { label: "Sends :message to the test process and asserts it was delivered" },
+      { label: "Waits up to 1000ms for :message to appear in the test process's mailbox, failing if it doesn't arrive", correct: true },
+      { label: "Asserts that exactly 1000 messages are in the mailbox" },
+      { label: "Asserts that :message was received by any process in the last 1000ms" },
+    ],
+    explanation:
+      "assert_receive waits for a message matching the given pattern to arrive in the test process's mailbox within the timeout (default 100ms). It's essential for testing asynchronous code: spawn a process that should send a message, then assert_receive to verify it arrived. If the message doesn't arrive within the timeout, the test fails with a clear error showing what was expected and what was actually in the mailbox.",
+  },
 ];
 
 export default questions;

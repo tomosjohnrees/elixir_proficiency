@@ -166,6 +166,39 @@ const questions: QuizQuestion[] = [
     explanation:
       "The accumulator in Enum.reduce can be any data structure, including a tuple. Here the accumulator {sum, count} tracks two values simultaneously: a running sum and a count. After processing all four elements, sum is 1+2+3+4 = 10 and count is 4, giving {10, 4}. This pattern is extremely useful when you need to compute multiple aggregates in a single pass over the data.",
   },
+  {
+    question: "What does `Enum.chunk_every([1, 2, 3, 4, 5], 2)` return?",
+    options: [
+      { label: "[[1, 2], [3, 4]]" },
+      { label: "[[1, 2], [3, 4], [5]]", correct: true },
+      { label: "[[1, 2], [3, 4], [5, nil]]" },
+      { label: "[{1, 2}, {3, 4}, {5}]" },
+    ],
+    explanation:
+      "Enum.chunk_every/2 splits a collection into chunks of the given size. The last chunk may have fewer elements than the requested size. Here, 5 elements split into chunks of 2 produces three chunks: [1, 2], [3, 4], and [5]. You can use Enum.chunk_every/4 with the :discard option to drop incomplete final chunks, or specify a padding value to fill them.",
+  },
+  {
+    question: "What does `Stream.resource/3` allow you to do that `Stream.iterate/2` and `Stream.unfold/2` cannot?",
+    options: [
+      { label: "It runs faster because it uses native code" },
+      { label: "It manages external resources with setup and teardown, supporting initialization, emission, and cleanup phases", correct: true },
+      { label: "It generates infinite streams while the others can only generate finite ones" },
+      { label: "It allows parallel stream processing" },
+    ],
+    explanation:
+      "Stream.resource/3 takes three functions: start_fun (initialize the resource, e.g., open a file), next_fun (emit elements and return updated accumulator), and after_fun (clean up the resource, e.g., close the file). This three-phase lifecycle makes it ideal for wrapping external resources that need proper cleanup. File.stream!/1 is implemented using Stream.resource internally.",
+  },
+  {
+    question: "What does `Enum.zip_with([1, 2, 3], [4, 5, 6], &(&1 + &2))` return?",
+    options: [
+      { label: "[{1, 4}, {2, 5}, {3, 6}]" },
+      { label: "[5, 7, 9]", correct: true },
+      { label: "[[1, 4], [2, 5], [3, 6]]" },
+      { label: "15" },
+    ],
+    explanation:
+      "Enum.zip_with/3 combines elements from two enumerables using a function, rather than creating tuples like Enum.zip/2. It's like zip + map in a single pass: each pair (1,4), (2,5), (3,6) is passed through the function &(&1 + &2), producing [5, 7, 9]. This is more efficient and readable than chaining Enum.zip |> Enum.map when you need to transform the pairs immediately.",
+  },
 ];
 
 export default questions;

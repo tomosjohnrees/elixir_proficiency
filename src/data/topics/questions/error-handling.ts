@@ -166,6 +166,50 @@ const questions: QuizQuestion[] = [
     explanation:
       "All exceptions defined with defexception are structs that automatically include the :__exception__ field (set to true, used internally to identify exception structs) and the :message field (used by the default message/1 implementation). You can override :message by specifying it in your field list or by implementing a custom message/1 callback.",
   },
+  {
+    question: "What does the `else` clause do in a `try` block (not to be confused with `with`'s else)?",
+    options: [
+      { label: "It runs when an exception is raised" },
+      { label: "It matches the return value of the do block when no exception occurs — similar to case matching on the result", correct: true },
+      { label: "It runs after the after block as a final cleanup" },
+      { label: "try doesn't have an else clause — only with does" },
+    ],
+    explanation:
+      "try/else is a lesser-known but useful feature. The else clause pattern-matches on the return value of the do block when no exception was raised. It's equivalent to wrapping the do block's result in a case expression. If the result doesn't match any else clause, a TryClauseError is raised. This is useful when you want to handle both exceptions (via rescue) and specific success patterns (via else) in one construct.",
+  },
+  {
+    question: "What is the difference between exit reasons `:normal`, `:shutdown`, and `{:shutdown, term}`?",
+    options: [
+      { label: "They are all equivalent — supervisors treat them the same way" },
+      { label: "All three are treated as 'clean' exits by supervisors (:transient children won't restart), but :normal doesn't propagate through links while :shutdown does", correct: true },
+      { label: ":normal and :shutdown are clean; {:shutdown, term} is abnormal and always triggers restarts" },
+      { label: ":shutdown kills all linked processes; :normal doesn't; {:shutdown, term} is a custom error" },
+    ],
+    explanation:
+      "These three exit reasons are special: supervisors consider them all 'expected' exits and won't restart :transient children for any of them. The key difference is link propagation: :normal exits are silently ignored by non-trapping linked processes, but :shutdown and {:shutdown, term} will terminate linked processes (unless they trap exits). {:shutdown, term} lets you include additional context (like {:shutdown, :database_unavailable}) while still being treated as a clean shutdown.",
+  },
+  {
+    question: "What does the `after` clause in a `try` block guarantee?",
+    options: [
+      { label: "It guarantees the code runs after all rescue and catch clauses are evaluated" },
+      { label: "It always runs regardless of whether an exception occurred, but its return value is discarded — the try expression returns the do/rescue/catch value", correct: true },
+      { label: "It runs only when an exception is raised" },
+      { label: "It retries the do block if an exception occurred" },
+    ],
+    explanation:
+      "The after clause always executes — whether the do block succeeds, raises an exception, throws a value, or exits. It's meant for cleanup (closing files, releasing resources). Importantly, the return value of after is thrown away; the try expression's result comes from the do, rescue, catch, or else clauses. This is similar to `finally` in other languages.",
+  },
+  {
+    question: "What happens if you `raise` inside a `rescue` clause?",
+    options: [
+      { label: "The original exception is re-raised with the original stacktrace" },
+      { label: "A new exception is raised with a fresh stacktrace pointing to the rescue clause, losing the original stacktrace", correct: true },
+      { label: "It creates an infinite loop of raises and rescues" },
+      { label: "The after clause catches the new exception" },
+    ],
+    explanation:
+      "Using plain `raise` inside a rescue creates a brand new exception with a stacktrace that points to the rescue clause itself. The original error's origin is lost, making debugging much harder. This is why `reraise exception, __STACKTRACE__` exists — it re-raises the exception while preserving the original stacktrace. Only use plain raise when you genuinely want to raise a different or new exception.",
+  },
 ];
 
 export default questions;
