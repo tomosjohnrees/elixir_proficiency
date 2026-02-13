@@ -9,22 +9,6 @@
 
 ---
 
-## Content Gaps
-
-### 1. Idiomatic Elixir / Common Patterns (Biggest Gap)
-
-The site teaches mechanics well but lacks dedicated content on what makes Elixir code *good*. This is the bridge between "I understand the syntax" and "I can write good Elixir" — exactly where most learners stall.
-
-Topics to cover:
-- Pipe-friendly function design (data-first arguments)
-- Tagged tuples (`{:ok, result}` / `{:error, reason}`) as a pervasive convention
-- When to use `with` vs `case` vs pattern matching in function heads
-- Naming conventions (predicate functions ending in `?`, bang functions `!`)
-- When to use a process vs a plain module (over-GenServer-ing is the #1 beginner mistake)
-- Small functions composed via pipes vs monolithic functions
-- Designing public APIs for modules
-- The "transform data through a pipeline" mindset vs "mutate objects"
-
 ## Learning Experience Gaps
 
 ### 4. Progress Tracking
