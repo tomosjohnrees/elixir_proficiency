@@ -66,11 +66,18 @@ export default function AnimationContainer({
     } else {
       clearTimers();
       setFading(false);
-      // Reset to fresh cycle for next scroll-in
-      setCycleKey((k) => k + 1);
     }
     return clearTimers;
   }, [isVisible, cycleKey, startCycleTimer, clearTimers]);
+
+  // Reset cycle when scrolling back into view
+  const prevVisible = useRef(false);
+  useEffect(() => {
+    if (isVisible && !prevVisible.current) {
+      setCycleKey((k) => k + 1);
+    }
+    prevVisible.current = isVisible;
+  }, [isVisible]);
 
   return (
     <div
