@@ -1,4 +1,5 @@
 import type { TopicContent } from "@/lib/types";
+import Animation10WithChain from "@/components/animations/Animation10WithChain";
 
 const controlFlow: TopicContent = {
   meta: {
@@ -29,6 +30,8 @@ const controlFlow: TopicContent = {
   },
 
   visuals: {
+    animation: Animation10WithChain,
+    animationDuration: 19,
     dataTypes: [
       { name: "case", color: "#6b46c1", examples: ["case value do", "  pattern -> result", "  _ -> default", "end"], description: "Pattern-matches a single value against multiple clauses. The first matching clause wins." },
       { name: "cond", color: "#2563eb", examples: ["cond do", "  condition -> result", "  true -> default", "end"], description: "Evaluates boolean conditions top-to-bottom. The first truthy condition wins." },
