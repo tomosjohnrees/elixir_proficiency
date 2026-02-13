@@ -55,9 +55,9 @@ export default function VisualsSection({ content }: VisualsSectionProps) {
       </FadeIn>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mb-10">
         {content.dataTypes.map((dt, i) => (
-          <FadeIn key={i} delay={i * 0.04}>
+          <FadeIn key={i} delay={i * 0.04} className="h-full">
             <div
-              className="rounded-xl border-2 p-5 space-y-3"
+              className="rounded-xl border-2 p-5 space-y-3 h-full"
               style={{ borderColor: dt.color }}
             >
               <div className="flex items-center gap-2">
