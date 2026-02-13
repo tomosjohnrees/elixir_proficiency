@@ -1,4 +1,5 @@
 import type { TopicContent } from "@/lib/types";
+import Animation08StructuralSharing from "@/components/animations/Animation08StructuralSharing";
 
 const listsAndTuples: TopicContent = {
   meta: {
@@ -29,6 +30,8 @@ const listsAndTuples: TopicContent = {
   },
 
   visuals: {
+    animation: Animation08StructuralSharing,
+    animationDuration: 17,
     dataTypes: [
       { name: "List", color: "#2563eb", examples: ["[1, 2, 3]", "[:a, :b]", "[]"], description: "Linked list of any values. Fast to prepend, slow to append or count." },
       { name: "Tuple", color: "#d97706", examples: ["{:ok, 42}", "{1, 2, 3}", "{}"], description: "Fixed-size container. Fast random access, but copying on update." },
