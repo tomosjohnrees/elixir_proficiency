@@ -22,12 +22,17 @@ This is a **Next.js 16 / React 19** interactive Elixir learning platform with 25
 
 **Data flow:** Topic content lives in `src/data/topics/<slug>.ts` as typed `TopicContent` exports. The topic registry (`src/data/topics.ts`) holds metadata for all 25 topics with an `active` flag. The home page renders the registry as a grid; inactive topics show "Coming Soon."
 
+**Quiz question pools:** Each topic has a large question pool in `src/data/topics/questions/<slug>.ts`. The `RandomQuiz` component selects a random subset per session, so quizzes vary between visits.
+
 **Type system:** All topic content conforms to interfaces in `src/lib/types.ts` — `TopicContent` contains `meta`, `eli5`, `visuals`, `deepDive`, `quiz`, and `practice` sub-objects.
 
 **Components:**
 - `src/components/layout/` — SiteHeader, TopicLayout, SectionNav (uses IntersectionObserver for scroll tracking)
-- `src/components/ui/` — CodeBlock, Quiz, QuizQuestion, PracticeProblem, Collapsible, ThemeToggle
+- `src/components/ui/` — CodeBlock, Quiz, QuizQuestion, RandomQuiz, PracticeProblem, PracticeProblems, Collapsible, ThemeToggle, AnimationContainer, FadeIn
 - `src/components/topic-sections/` — one component per stage (ELI5Section, VisualsSection, etc.)
+- `src/components/animations/` — per-topic animated visuals using Motion (framer-motion). Named `Animation<NN><Name>.tsx`.
+
+**Animations:** Uses the `motion` package (Framer Motion). Shared animation variants in `src/lib/motion.ts`. Animation components are embedded in topic data via the visuals section.
 
 **Syntax highlighting:** Custom Elixir tokenizer in `src/lib/syntax.ts` (not an external library). Produces HTML with `syn-*` CSS classes styled via CSS variables in `globals.css`.
 
