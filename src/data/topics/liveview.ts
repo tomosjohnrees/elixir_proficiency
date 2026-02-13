@@ -1,4 +1,5 @@
 import type { TopicContent } from "@/lib/types";
+import Animation04LiveViewLifecycle from "@/components/animations/Animation04LiveViewLifecycle";
 
 const liveview: TopicContent = {
   meta: {
@@ -29,6 +30,8 @@ const liveview: TopicContent = {
   },
 
   visuals: {
+    animation: Animation04LiveViewLifecycle,
+    animationDuration: 20,
     dataTypes: [
       { name: "Socket", color: "#2563eb", examples: ["socket.assigns", "assign(socket, :count, 0)", "assign(socket, key: val)"], description: "The LiveView equivalent of conn. It carries assigns (state) that your template renders. Updating assigns triggers a re-render." },
       { name: "mount/3", color: "#059669", examples: ["def mount(params, session, socket)", "assign(socket, count: 0)", "{:ok, socket}"], description: "Called once when the LiveView starts. Set up initial state by assigning values to the socket." },
