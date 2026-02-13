@@ -380,6 +380,116 @@ ChatRoom.members(room)  # => ["José"]`,
         explanation:
           "GenServer.call has a default timeout of 5 seconds (5000ms). If the server doesn't reply within that time, the caller crashes with a timeout error. You can customize it: GenServer.call(pid, msg, 10_000) for 10 seconds, or :infinity to wait forever (not recommended).",
       },
+      {
+        question: "A GenServer's handle_call/3 returns {:noreply, new_state} instead of {:reply, response, new_state}. What happens to the caller?",
+        options: [
+          { label: "The caller immediately receives nil" },
+          { label: "The caller blocks until it times out (default 5 seconds) unless GenServer.reply/2 is used", correct: true },
+          { label: "The caller receives {:error, :no_reply}" },
+          { label: "The GenServer crashes because {:noreply, ...} is invalid for handle_call" },
+        ],
+        explanation:
+          "Returning {:noreply, new_state} from handle_call is legal but means the server does not automatically send a response. The caller remains blocked waiting. You must eventually call GenServer.reply(from, response) using the `from` argument, or the caller will time out after 5 seconds and crash. This pattern is useful for deferring replies to a later point.",
+      },
+      {
+        question: "You have a GenServer that performs an expensive database query inside handle_call. Many clients call it simultaneously. What problem does this create?",
+        options: [
+          { label: "The database will run out of connections" },
+          { label: "The GenServer becomes a bottleneck because it processes messages sequentially, making all callers wait in line", correct: true },
+          { label: "The BEAM scheduler will crash from too many concurrent calls" },
+          { label: "Each call spawns a new process, causing memory issues" },
+        ],
+        explanation:
+          "A GenServer processes its mailbox one message at a time. If handle_call does expensive work, every subsequent caller blocks waiting for the previous call to finish. This makes the GenServer a serial bottleneck. The solution is to offload expensive work to a Task or pool of workers and use GenServer.reply/2 to respond asynchronously.",
+      },
+      {
+        question: "What does returning {:stop, :normal, reply, new_state} from handle_call do?",
+        options: [
+          { label: "Sends the reply to the caller and then stops the GenServer gracefully", correct: true },
+          { label: "Stops the GenServer immediately without sending a reply" },
+          { label: "Raises a :normal exception in the caller process" },
+          { label: "Restarts the GenServer with new_state as the initial state" },
+        ],
+        explanation:
+          "The 4-element {:stop, reason, reply, new_state} tuple is a special return from handle_call that sends the reply to the caller AND then initiates a shutdown. The terminate/2 callback runs with the given reason and state. With reason :normal, the process exits gracefully without triggering supervisor restarts.",
+      },
+      {
+        question: "Which approach correctly implements a GenServer that responds to a call after finishing an async task?",
+        options: [
+          { label: "Return {:reply, Task.async(fn -> ... end), state}" },
+          { label: "Store `from` in state, return {:noreply, state}, then call GenServer.reply(from, result) when the work completes", correct: true },
+          { label: "Use handle_cast instead to avoid blocking" },
+          { label: "Set the timeout to :infinity so the caller waits forever" },
+        ],
+        explanation:
+          "The correct pattern is to save the `from` reference (the second argument to handle_call) in your state, return {:noreply, state} to release the callback, and later call GenServer.reply(from, result) when the async work finishes. This keeps the GenServer free to process other messages while the caller waits only for the actual result.",
+      },
+      {
+        question: "What happens if a GenServer does NOT implement a catch-all handle_info/2 clause and receives an unexpected message?",
+        options: [
+          { label: "The message is silently discarded" },
+          { label: "The GenServer logs a warning but continues running" },
+          { label: "In Elixir 1.17+, a default implementation logs a warning; in older versions, the GenServer crashes with a function clause error", correct: true },
+          { label: "The message stays in the mailbox forever" },
+        ],
+        explanation:
+          "Since Elixir 1.17, `use GenServer` injects a default handle_info/2 that logs an :error-level message for unhandled messages. In older versions, a missing clause would cause a function clause error and crash the process. It is still best practice to define your own catch-all clause that logs unexpected messages at a level you control.",
+      },
+      {
+        question: "You register a GenServer with `name: MyApp.Cache`. What happens if you call `GenServer.start_link(MyApp.Cache, [], name: MyApp.Cache)` a second time?",
+        options: [
+          { label: "A second process starts with the same name" },
+          { label: "The first process is killed and replaced" },
+          { label: "start_link returns {:error, {:already_started, pid}}", correct: true },
+          { label: "The name is automatically incremented to MyApp.Cache_2" },
+        ],
+        explanation:
+          "Process names in Elixir are unique. If a process is already registered under a given name, start_link returns {:error, {:already_started, pid}} where pid is the existing process. This prevents duplicate GenServers and is especially important when supervisors restart child processes.",
+      },
+      {
+        question: "A handle_cast callback accidentally raises an exception. What happens?",
+        options: [
+          { label: "The exception is silently swallowed and the GenServer continues" },
+          { label: "The GenServer process crashes, terminate/2 is called, and the supervisor may restart it", correct: true },
+          { label: "The cast is retried automatically up to 3 times" },
+          { label: "The error is sent back to the process that called GenServer.cast" },
+        ],
+        explanation:
+          "If any callback raises an exception, the GenServer process crashes. Before exiting, terminate/2 is called (if defined) with the error reason. Since cast is fire-and-forget, the sending process has no idea the crash occurred. If the GenServer is under a supervisor, it will be restarted according to the supervisor's strategy.",
+      },
+      {
+        question: "You return {:noreply, state, 5000} from handle_cast. What does the 5000 mean?",
+        options: [
+          { label: "The GenServer will shut down after 5 seconds" },
+          { label: "The next cast will be rate-limited for 5 seconds" },
+          { label: "If no message arrives within 5 seconds, handle_info(:timeout, state) is called", correct: true },
+          { label: "The state is persisted to disk every 5 seconds" },
+        ],
+        explanation:
+          "Adding a timeout integer as the last element of the return tuple (e.g., {:noreply, state, 5000}) tells the GenServer to trigger a :timeout message via handle_info if no other message arrives within that time. This is useful for implementing idle timeouts, lazy cleanup, or hibernation. The timeout resets every time any message is received.",
+      },
+      {
+        question: "Why is it considered a best practice to wrap GenServer.call/cast inside public client functions in the same module?",
+        options: [
+          { label: "It makes the GenServer run faster due to compiler optimizations" },
+          { label: "It hides the message protocol, provides a clean API, and allows changing the internal message format without breaking callers", correct: true },
+          { label: "GenServer.call and GenServer.cast only work when called from the same module" },
+          { label: "It's required by the GenServer behaviour — the code won't compile otherwise" },
+        ],
+        explanation:
+          "Wrapping calls in client functions (like `def get(pid), do: GenServer.call(pid, :get)`) decouples callers from the internal message format. If you later change the message from :get to {:get, :all}, you only update the client function and the matching callback. Callers never need to know the internal protocol, which is a key principle of the client-server architecture in GenServer modules.",
+      },
+      {
+        question: "A GenServer stores a large list in its state and frequently processes GenServer.call requests that scan the entire list. The system starts showing high latency. What is the most appropriate fix?",
+        options: [
+          { label: "Switch all calls to casts so the caller doesn't block" },
+          { label: "Use :infinity timeout so callers never time out" },
+          { label: "Move the data to ETS so reads can happen concurrently without going through the GenServer's sequential mailbox", correct: true },
+          { label: "Increase the GenServer's process priority with Process.flag(:priority, :high)" },
+        ],
+        explanation:
+          "When a GenServer becomes a bottleneck due to sequential message processing, moving read-heavy data into ETS (Erlang Term Storage) is a proven solution. ETS tables allow concurrent reads from any process without serializing through the GenServer. The GenServer can still manage writes to ETS while reads bypass it entirely, dramatically reducing contention and latency.",
+      },
     ],
   },
 

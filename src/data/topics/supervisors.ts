@@ -357,6 +357,116 @@ end
         explanation:
           "A supervision tree is a hierarchical structure where supervisors can supervise both workers and other supervisors. Each level handles failures it can, escalating to the parent if it can't cope. This is the backbone of fault-tolerance in OTP applications.",
       },
+      {
+        question: "Which restart option should you use for a GenServer that runs a one-time data migration and should not be restarted after it completes successfully?",
+        options: [
+          { label: ":permanent" },
+          { label: ":temporary" },
+          { label: ":transient", correct: true },
+          { label: ":one_for_one" },
+        ],
+        explanation:
+          ":transient is the correct choice because it only restarts the child on abnormal exit (crashes), not on normal exit. A data migration that finishes successfully exits with :normal, so it won't be restarted. :temporary would also not restart it, but :temporary never restarts even on crashes, which means you'd lose automatic retry if the migration fails partway through.",
+      },
+      {
+        question: "You have three children under a supervisor: A (database connection), B (cache that depends on A), and C (API server that depends on B). Which strategy ensures that if B crashes, both B and C are restarted but A keeps running?",
+        options: [
+          { label: ":one_for_one" },
+          { label: ":one_for_all" },
+          { label: ":rest_for_one", correct: true },
+          { label: ":simple_one_for_one" },
+        ],
+        explanation:
+          ":rest_for_one restarts the crashed child and all children started after it in the child list. Since children are started in order (A, B, C), if B crashes, B and C are restarted while A keeps running. This perfectly models a sequential dependency chain. :one_for_one would only restart B, leaving C connected to a stale cache. :one_for_all would unnecessarily restart A.",
+      },
+      {
+        question: "What is the default max_restarts and max_seconds configuration for a Supervisor?",
+        options: [
+          { label: "1 restart in 10 seconds" },
+          { label: "3 restarts in 5 seconds", correct: true },
+          { label: "5 restarts in 10 seconds" },
+          { label: "10 restarts in 60 seconds" },
+        ],
+        explanation:
+          "The default crash intensity is 3 restarts within 5 seconds. If a child process crashes more than 3 times in a 5-second window, the supervisor considers it unrecoverable and shuts itself down. You can tune these values based on your use case — a network-dependent service might need a higher threshold to ride out brief connectivity issues.",
+      },
+      {
+        question: "When should you use DynamicSupervisor instead of a regular Supervisor?",
+        options: [
+          { label: "When you need the :one_for_all strategy" },
+          { label: "When child processes need to be started and stopped at runtime on demand", correct: true },
+          { label: "When you have more than 10 child processes" },
+          { label: "When children need different restart strategies" },
+        ],
+        explanation:
+          "DynamicSupervisor is designed for cases where children are started dynamically at runtime — for example, one process per connected user or per uploaded file. Regular Supervisor declares its children upfront in init/1. DynamicSupervisor starts with no children and you add them with DynamicSupervisor.start_child/2. It only supports the :one_for_one strategy.",
+      },
+      {
+        question: "A supervisor with strategy :one_for_one has children [A, B, C]. Child C crashes 4 times in 3 seconds with the default max_restarts/max_seconds settings. What happens?",
+        options: [
+          { label: "Only C is permanently stopped; A and B keep running" },
+          { label: "The supervisor shuts down, terminating A, B, and C", correct: true },
+          { label: "C is restarted a 4th time and the failure count resets" },
+          { label: "The supervisor logs a warning but continues operating" },
+        ],
+        explanation:
+          "The default max_restarts is 3 in 5 seconds. After the 4th crash within 3 seconds, the threshold is exceeded and the supervisor itself shuts down, taking all its children (A, B, and C) with it. If this supervisor has a parent supervisor, that parent will then attempt to restart it. This cascading behavior prevents infinite crash loops from consuming resources.",
+      },
+      {
+        question: "What is the purpose of the :shutdown option in a child specification?",
+        options: [
+          { label: "It determines how long the supervisor waits for the child to terminate gracefully before forcefully killing it", correct: true },
+          { label: "It specifies whether the child should be started automatically" },
+          { label: "It sets the order in which children are shut down" },
+          { label: "It controls whether the child can be restarted" },
+        ],
+        explanation:
+          "The :shutdown option specifies how many milliseconds the supervisor waits for a child to terminate after sending it a shutdown signal. The default is 5000ms for workers. If the child doesn't stop in time, it's forcefully killed. You can also set it to :brutal_kill for immediate termination or :infinity for supervisors that need time to shut down their own children.",
+      },
+      {
+        question: "You're building a chat application where each connected user gets their own process. Which supervision approach is most appropriate?",
+        options: [
+          { label: "A regular Supervisor with :one_for_all strategy" },
+          { label: "A DynamicSupervisor with :one_for_one strategy", correct: true },
+          { label: "A regular Supervisor with :rest_for_one strategy" },
+          { label: "No supervisor needed — just spawn processes directly" },
+        ],
+        explanation:
+          "DynamicSupervisor is ideal here because user processes come and go at runtime as users connect and disconnect. You can't declare them upfront in a static child list. DynamicSupervisor.start_child/2 lets you add a new process for each connection, and when a user's process crashes, only that one is restarted (one_for_one). Spawning without supervision would mean crashed user processes are lost silently.",
+      },
+      {
+        question: "In a supervision tree, what happens when a child supervisor exceeds its max_restarts threshold?",
+        options: [
+          { label: "It keeps running but stops restarting its children" },
+          { label: "It shuts down and its parent supervisor handles the failure according to the parent's strategy", correct: true },
+          { label: "The entire application terminates immediately" },
+          { label: "It resets its restart counter and continues" },
+        ],
+        explanation:
+          "When a child supervisor exceeds its max_restarts, it shuts itself down with an abnormal exit. Its parent supervisor then treats this like any other child crash and applies its own strategy — restarting just that sub-tree (one_for_one), all children (one_for_all), or the crashed one and later children (rest_for_one). This cascading recovery is how supervision trees provide layered fault tolerance.",
+      },
+      {
+        question: "Why is the order of children in a Supervisor's child list significant?",
+        options: [
+          { label: "It only affects logging output" },
+          { label: "Children are started in order and shut down in reverse order, which matters for dependencies", correct: true },
+          { label: "The first child always gets priority for CPU time" },
+          { label: "It determines which child the supervisor monitors most closely" },
+        ],
+        explanation:
+          "Supervisors start children top-to-bottom and shut them down bottom-to-top (reverse order). This is critical for dependencies: if a cache depends on a database connection, the database should be listed first so it starts before the cache and shuts down after it. This ordering also affects :rest_for_one strategy behavior, where only children listed after the crashed child are restarted.",
+      },
+      {
+        question: "A supervisor has max_restarts: 5 and max_seconds: 30. Child A crashes at t=0, t=10, t=20, t=25, and t=29. What happens on the 5th crash?",
+        options: [
+          { label: "The supervisor shuts down because 5 crashes have occurred" },
+          { label: "Child A is restarted normally because only 4 crashes fall within the 30-second window at the time of the 5th crash" },
+          { label: "The supervisor shuts down because there have been 5 crashes within 30 seconds", correct: true },
+          { label: "The crash counter resets after 30 seconds from the first crash" },
+        ],
+        explanation:
+          "The max_restarts/max_seconds threshold uses a sliding window. At t=29 when the 5th crash occurs, all 5 crashes (at t=0, t=10, t=20, t=25, t=29) fall within the 30-second window. Since 5 restarts have been attempted within 30 seconds and the limit is 5, the supervisor determines the child is unrecoverable and shuts itself down. The window slides forward in time — it doesn't reset from the first crash.",
+      },
     ],
   },
 
