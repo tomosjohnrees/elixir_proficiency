@@ -13,8 +13,18 @@ export default function VisualsSection({ content }: VisualsSectionProps) {
         Visual Reference
       </h2>
 
-      {/* Animated Visual */}
-      {content.animation && content.animationDuration && (
+      {/* Animated Visuals */}
+      {content.animations?.map((anim, i) => (
+        <div key={i} className="mb-8">
+          <AnimationContainer
+            cycleDuration={anim.duration}
+            aspectRatio="800 / 460"
+          >
+            <anim.component />
+          </AnimationContainer>
+        </div>
+      ))}
+      {!content.animations && content.animation && content.animationDuration && (
         <div className="mb-8">
           <AnimationContainer
             cycleDuration={content.animationDuration}
@@ -24,7 +34,7 @@ export default function VisualsSection({ content }: VisualsSectionProps) {
           </AnimationContainer>
         </div>
       )}
-      {content.animation && !content.animationDuration && (
+      {!content.animations && content.animation && !content.animationDuration && (
         <div className="mb-8">
           <content.animation />
         </div>

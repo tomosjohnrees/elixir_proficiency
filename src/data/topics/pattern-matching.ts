@@ -1,4 +1,6 @@
 import type { TopicContent } from "@/lib/types";
+import Animation05PatternMatch from "@/components/animations/Animation05PatternMatch";
+import Animation13HeadTail from "@/components/animations/Animation13HeadTail";
 
 const patternMatching: TopicContent = {
   meta: {
@@ -28,6 +30,10 @@ const patternMatching: TopicContent = {
   },
 
   visuals: {
+    animations: [
+      { component: Animation05PatternMatch, duration: 20 },
+      { component: Animation13HeadTail, duration: 18 },
+    ],
     dataTypes: [
       { name: "Simple Match", color: "#6b46c1", examples: ["x = 42", "{a, b} = {1, 2}", "[h | t] = [1, 2, 3]"], description: "The left side is a pattern. Variables get bound to matching parts of the right side." },
       { name: "Tuple Destructure", color: "#2563eb", examples: ["{:ok, val} = {:ok, 42}", "{a, b, c} = {1, 2, 3}"], description: "Match tuples by shape and size. Atom literals must match exactly; variables capture values." },

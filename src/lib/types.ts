@@ -25,9 +25,15 @@ export interface OperatorGroup {
   operators: { symbol: string; description: string }[];
 }
 
+export interface AnimationEntry {
+  component: React.ComponentType;
+  duration: number;
+}
+
 export interface VisualsContent {
   animation?: React.ComponentType;
   animationDuration?: number;
+  animations?: AnimationEntry[];
   dataTypes: DataTypeCard[];
   operatorGroups: OperatorGroup[];
 }

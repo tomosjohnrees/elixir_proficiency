@@ -1,4 +1,5 @@
 import type { TopicContent } from "@/lib/types";
+import Animation02EagerVsLazy from "@/components/animations/Animation02EagerVsLazy";
 
 const enumerables: TopicContent = {
   meta: {
@@ -29,6 +30,8 @@ const enumerables: TopicContent = {
   },
 
   visuals: {
+    animation: Animation02EagerVsLazy,
+    animationDuration: 17,
     dataTypes: [
       { name: "Enum (Eager)", color: "#6b46c1", examples: ["Enum.map(list, fn)", "Enum.filter(list, fn)", "Enum.reduce(list, acc, fn)"], description: "Processes the entire collection immediately. Returns the full result. Best for small-to-medium collections." },
       { name: "Stream (Lazy)", color: "#2563eb", examples: ["Stream.map(list, fn)", "Stream.filter(list, fn)", "Stream.cycle(list)"], description: "Builds a lazy recipe. Nothing runs until consumed by Enum. Handles infinite collections." },
