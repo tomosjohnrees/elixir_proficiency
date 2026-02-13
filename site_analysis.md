@@ -25,23 +25,6 @@ Even simple `localStorage` tracking with a progress bar on the home page would a
 - Quiz score history with ability to retake
 - A "resume where you left off" link
 
-### 5. Concept Map / Topic Relationships
-
-The 25 topics are presented as a flat numbered grid. A visual showing how they connect would help learners understand the bigger picture and choose what to study next.
-
-Key relationship chains:
-- Pattern Matching → feeds into almost every other topic
-- Processes → GenServer → Supervisors → OTP (linear chain)
-- Functions & Modules → Protocols & Behaviours (abstraction progression)
-- Mix & OTP → Ecto → Phoenix → LiveView (ecosystem build-up)
-- Lists & Tuples → Enumerables & Streams → Comprehensions (data processing)
-
-Could be implemented as:
-- An interactive SVG/canvas diagram on the home page
-- Prerequisite tags on each topic page
-- "You should understand X before starting this topic" warnings
-- "Next up" suggestions at the end of each topic
-
 ### 6. "Coming From X" Mental Model Bridges
 
 Many Elixir learners come from OOP languages (JavaScript, Python, Ruby, Java). Brief callouts mapping familiar concepts would dramatically accelerate comprehension:

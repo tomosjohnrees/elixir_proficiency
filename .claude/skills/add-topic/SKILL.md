@@ -11,16 +11,17 @@ Add topic number **$ARGUMENTS** to the Elixir learning app.
 
 ### 1. Look up the topic
 
-Read `course_overview.md` (project root) to find the topic matching number **$ARGUMENTS**. This file has all 25 topics with their titles and descriptions. The topic number corresponds to the `### N.` headings in that file.
+Read `course_overview.md` (project root) to find the topic matching number **$ARGUMENTS**. This file has all 30 topics with their titles and descriptions. The topic number corresponds to the `### N.` headings in that file.
 
 ### 2. Understand the rules
 
 Read `README.md` (project root) for the full content guidelines. Key rules:
 
-- Every topic has 5 stages: **ELI5**, **Visuals**, **Deep Dive**, **Quiz**, **Practice**
+- Every topic has 6 sections: **ELI5**, **Visuals**, **Deep Dive**, **Gotchas**, **Quiz**, **Practice**
 - ELI5: Single concrete analogy, no Elixir syntax, 2-4 short paragraphs
 - Visuals: Diagrams/illustrations that reinforce the ELI5 and build visual intuition
 - Deep Dive: Technical explanation with real Elixir code examples
+- Gotchas: 3+ common pitfalls/misconceptions, each with `title`, `description`, and optional `code`
 - Quiz: Large question pool (15+), each with a `question`, `explanation`, and exactly one `correct` option. The `RandomQuiz` component selects a random subset per session.
 - Practice: 2-4 problems ordered by difficulty, each with hints, solution, and walkthrough
 - Tone: Friendly, encouraging, use "you", short clear sentences
@@ -53,12 +54,13 @@ The file must:
 - Export a `TopicContent` object as default export
 - Have `meta` matching the registry entry but with `active: true`
 - Set `quiz: { questions }` using the imported question pool
+- Include `gotchas: { items: [...] }` with 3+ `Gotcha` entries (each has `title`, `description`, optional `code`)
 - Follow all the content guidelines from README.md
 - Use the `VisualsContent` interface — adapt the visual data to suit the topic (not every topic has "data type cards" and "operator groups"; design visuals appropriate to the concept)
 
 ### 6. Update the registry
 
-In `src/data/topics.ts`, set `active: true` for the topic's registry entry.
+In `src/data/topics.ts`, ensure the topic has an entry with `active: true`. If the entry already exists with `active: false`, flip it. If no entry exists, add one to the `topicRegistry` array.
 
 ### 7. Register the route
 
@@ -79,7 +81,7 @@ Add a test block for the new topic in `src/__tests__/topics-data.test.ts`. Follo
 - Quiz has at least 15 questions, each with a `question`, `explanation`, and exactly one `correct` option
 - Practice has 2-4 problems, each with `title`, `prompt`, non-empty `hints`, `solution`, non-empty `walkthrough`, and valid `difficulty`
 
-Update the active topic count in the "has all 25 topics active" test.
+Also add the new topic to the `allTopics` array in the "gotchas content across all topics" describe block and to the active-topics assertions. Update the topic counts in the "has N topics" and "has N active topics" tests to match the new total.
 
 ### 9. Run tests
 
@@ -89,6 +91,7 @@ Run `npm test` and fix any failures.
 
 - The `VisualsContent` type uses `dataTypes` and `operatorGroups` fields because the first topic needed those. For other topics, still populate these arrays but adapt their meaning to fit the topic. If the topic doesn't have "operators", `operatorGroups` can be an empty array. Design the `dataTypes` cards to represent the key visual concepts for the topic.
 - `VisualsContent` also has optional `animation`, `animationDuration`, and `animations` fields for animated visuals (Motion/Framer Motion components). These are optional — only add if the topic has animations.
+- **Gotchas are required** — all existing topics have them and the test suite validates them. Include `gotchas: { items: [...] }` with at least 3 entries. The `Gotcha` interface: `{ title: string; description: string; code?: string }`.
 - Each quiz question must have exactly one option with `correct: true`.
 - Practice problem difficulty must be one of: `"beginner"`, `"intermediate"`, `"advanced"`.
 - Practice problems should be ordered by difficulty (easiest first).
