@@ -13,8 +13,8 @@ vi.mock("next/link", () => ({
 }));
 
 describe("quizPool", () => {
-  it("has 125 tagged questions (25 topics x 5 questions)", () => {
-    expect(quizPool).toHaveLength(125);
+  it("has 375 tagged questions (25 topics x 15 questions)", () => {
+    expect(quizPool).toHaveLength(375);
   });
 
   it("each question has topic metadata", () => {
