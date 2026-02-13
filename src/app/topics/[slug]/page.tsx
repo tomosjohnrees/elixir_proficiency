@@ -34,6 +34,7 @@ const topicModules: Record<string, () => Promise<{ default: TopicContent }>> = {
   "liveview": () => import("@/data/topics/liveview"),
   "concurrency-patterns": () => import("@/data/topics/concurrency-patterns"),
   "deployment": () => import("@/data/topics/deployment"),
+  "debugging-and-tooling": () => import("@/data/topics/debugging-and-tooling"),
 };
 
 interface TopicPageProps {
