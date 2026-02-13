@@ -1,4 +1,5 @@
 import type { TopicContent } from "@/lib/types";
+import Animation03SupervisorStrategies from "@/components/animations/Animation03SupervisorStrategies";
 
 const supervisors: TopicContent = {
   meta: {
@@ -29,6 +30,8 @@ const supervisors: TopicContent = {
   },
 
   visuals: {
+    animation: Animation03SupervisorStrategies,
+    animationDuration: 16,
     dataTypes: [
       { name: "one_for_one", color: "#059669", examples: ["[A] [B] [C]", "B crashes →", "[A] [B*] [C]", "(only B restarted)"], description: "Each child is independent. If one crashes, only that child is restarted. The most common strategy." },
       { name: "one_for_all", color: "#e11d48", examples: ["[A] [B] [C]", "B crashes →", "[A*] [B*] [C*]", "(all restarted)"], description: "All children depend on each other. If one crashes, all are terminated and restarted. Use when children share critical state." },
