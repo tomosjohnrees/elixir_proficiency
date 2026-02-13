@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import Link from "next/link";
+import { motion, AnimatePresence } from "motion/react";
 import type { TaggedQuizQuestion } from "@/lib/types";
 import QuizQuestion from "./QuizQuestion";
 
@@ -68,71 +69,6 @@ export default function RandomQuiz({ pool }: { pool: TaggedQuizQuestion[] }) {
     }
   }
 
-  if (phase === "intro") {
-    return (
-      <div className="text-center py-12">
-        <div className="text-5xl mb-6">&#9889;</div>
-        <h2 className="text-2xl font-bold mb-3">Random Quiz</h2>
-        <p className="text-muted max-w-md mx-auto mb-8">
-          Test your Elixir knowledge with 10 random questions drawn from all 25
-          topics. See how much you really know!
-        </p>
-        <button
-          onClick={startQuiz}
-          className="px-6 py-3 rounded-lg bg-accent text-white font-semibold hover:opacity-90 transition-opacity cursor-pointer"
-        >
-          Start Quiz
-        </button>
-      </div>
-    );
-  }
-
-  if (phase === "active") {
-    const q = questions[currentIndex];
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <p className="text-sm font-medium text-muted">
-            Question {currentIndex + 1} of {questions.length}
-          </p>
-          <span className="inline-block text-xs font-medium px-2.5 py-1 rounded-full bg-accent-faint text-accent">
-            {q.topicTitle}
-          </span>
-        </div>
-
-        <div className="w-full bg-surface-2 rounded-full h-1.5">
-          <div
-            className="bg-accent h-1.5 rounded-full transition-all"
-            style={{
-              width: `${((currentIndex + (answered ? 1 : 0)) / questions.length) * 100}%`,
-            }}
-          />
-        </div>
-
-        <QuizQuestion
-          key={currentIndex}
-          question={q}
-          questionNumber={currentIndex + 1}
-          onAnswer={handleAnswer}
-        />
-
-        {answered && (
-          <div className="text-right">
-            <button
-              onClick={handleNext}
-              className="px-5 py-2.5 rounded-lg bg-accent text-white font-semibold hover:opacity-90 transition-opacity cursor-pointer"
-            >
-              {currentIndex < questions.length - 1
-                ? "Next Question"
-                : "See Results"}
-            </button>
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  // Results phase
   const score = answers.filter((a) => a.correct).length;
   const wrongByTopic = new Map<string, TopicToReview>();
   for (const a of answers) {
@@ -155,57 +91,187 @@ export default function RandomQuiz({ pool }: { pool: TaggedQuizQuestion[] }) {
   );
 
   return (
-    <div className="space-y-8">
-      <div className="rounded-lg border border-accent bg-accent-faint px-6 py-8 text-center">
-        <p className="text-3xl font-bold mb-2">
-          {score} / {answers.length}
-        </p>
-        <p className="text-muted">
-          {score === answers.length
-            ? "Perfect score! You really know your Elixir!"
-            : score >= answers.length * 0.7
-              ? "Great job! Just a few areas to brush up on."
-              : score >= answers.length * 0.4
-                ? "Good effort! Review the topics below to improve."
-                : "Keep studying! The topics below will help you improve."}
-        </p>
-      </div>
+    <AnimatePresence mode="wait">
+      {phase === "intro" && (
+        <motion.div
+          key="intro"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center py-12"
+        >
+          <motion.div
+            className="text-5xl mb-6"
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          >
+            &#9889;
+          </motion.div>
+          <h2 className="text-2xl font-bold mb-3">Random Quiz</h2>
+          <p className="text-muted max-w-md mx-auto mb-8">
+            Test your Elixir knowledge with 10 random questions drawn from all 25
+            topics. See how much you really know!
+          </p>
+          <motion.button
+            onClick={startQuiz}
+            className="px-6 py-3 rounded-lg bg-accent text-white font-semibold hover:opacity-90 transition-opacity cursor-pointer"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Start Quiz
+          </motion.button>
+        </motion.div>
+      )}
 
-      {topicsToReview.length > 0 && (
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Topics to Review</h3>
-          <div className="space-y-2">
-            {topicsToReview.map((t) => (
-              <Link
-                key={t.slug}
-                href={`/topics/${t.slug}`}
-                className="flex items-center justify-between rounded-lg border border-border p-4 hover:border-accent hover:shadow-md transition-all bg-surface group"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-sm font-mono text-accent font-bold">
-                    {String(t.number).padStart(2, "0")}
-                  </span>
-                  <span className="font-medium group-hover:text-accent transition-colors">
-                    {t.title}
-                  </span>
-                </div>
-                <span className="text-sm text-muted">
-                  {t.wrong} wrong
-                </span>
-              </Link>
-            ))}
+      {phase === "active" && (
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium text-muted">
+              Question {currentIndex + 1} of {questions.length}
+            </p>
+            <span className="inline-block text-xs font-medium px-2.5 py-1 rounded-full bg-accent-faint text-accent">
+              {questions[currentIndex].topicTitle}
+            </span>
           </div>
+
+          <div className="w-full bg-surface-2 rounded-full h-1.5">
+            <motion.div
+              className="bg-accent h-1.5 rounded-full"
+              initial={false}
+              animate={{
+                width: `${((currentIndex + (answered ? 1 : 0)) / questions.length) * 100}%`,
+              }}
+              transition={{ type: "spring", stiffness: 200, damping: 30 }}
+            />
+          </div>
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentIndex}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="space-y-6"
+            >
+              <QuizQuestion
+                key={currentIndex}
+                question={questions[currentIndex]}
+                questionNumber={currentIndex + 1}
+                onAnswer={handleAnswer}
+              />
+
+              <AnimatePresence>
+                {answered && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="text-right"
+                  >
+                    <motion.button
+                      onClick={handleNext}
+                      className="px-5 py-2.5 rounded-lg bg-accent text-white font-semibold hover:opacity-90 transition-opacity cursor-pointer"
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                    >
+                      {currentIndex < questions.length - 1
+                        ? "Next Question"
+                        : "See Results"}
+                    </motion.button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          </AnimatePresence>
         </div>
       )}
 
-      <div className="text-center pt-4">
-        <button
-          onClick={startQuiz}
-          className="px-6 py-3 rounded-lg bg-accent text-white font-semibold hover:opacity-90 transition-opacity cursor-pointer"
+      {phase === "results" && (
+        <motion.div
+          key="results"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="space-y-8"
         >
-          Try Again
-        </button>
-      </div>
-    </div>
+          <motion.div
+            className="rounded-lg border border-accent bg-accent-faint px-6 py-8 text-center"
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.1 }}
+          >
+            <motion.p
+              className="text-3xl font-bold mb-2"
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.2 }}
+            >
+              {score} / {answers.length}
+            </motion.p>
+            <motion.p
+              className="text-muted"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.35 }}
+            >
+              {score === answers.length
+                ? "Perfect score! You really know your Elixir!"
+                : score >= answers.length * 0.7
+                  ? "Great job! Just a few areas to brush up on."
+                  : score >= answers.length * 0.4
+                    ? "Good effort! Review the topics below to improve."
+                    : "Keep studying! The topics below will help you improve."}
+            </motion.p>
+          </motion.div>
+
+          {topicsToReview.length > 0 && (
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Topics to Review</h3>
+              <div className="space-y-2">
+                {topicsToReview.map((t, i) => (
+                  <motion.div
+                    key={t.slug}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 + i * 0.05 }}
+                  >
+                    <Link
+                      href={`/topics/${t.slug}`}
+                      className="flex items-center justify-between rounded-lg border border-border p-4 hover:border-accent hover:shadow-md transition-all bg-surface group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm font-mono text-accent font-bold">
+                          {String(t.number).padStart(2, "0")}
+                        </span>
+                        <span className="font-medium group-hover:text-accent transition-colors">
+                          {t.title}
+                        </span>
+                      </div>
+                      <span className="text-sm text-muted">
+                        {t.wrong} wrong
+                      </span>
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="text-center pt-4">
+            <motion.button
+              onClick={startQuiz}
+              className="px-6 py-3 rounded-lg bg-accent text-white font-semibold hover:opacity-90 transition-opacity cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Try Again
+            </motion.button>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
