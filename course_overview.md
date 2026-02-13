@@ -102,3 +102,18 @@ Connecting nodes, `Node`, `:rpc`, distributed registries, and the trade-offs of 
 
 ### 25. Nerves and NIFs
 Embedded systems with Nerves, calling C/Rust from Elixir via NIFs or Ports, and understanding when to reach outside the BEAM.
+
+### 26. Idiomatic Elixir and Common Patterns
+Pipe-friendly function design, tagged tuple conventions, choosing between `with`/`case`/function heads, naming conventions (`?` and `!`), when to use a process vs a plain module, and the "transform data through a pipeline" mindset.
+
+### 27. ETS (Erlang Term Storage)
+In-memory storage with `:ets.new/2`, table types (set, ordered_set, bag, duplicate_bag), concurrent access, match specifications, and when to use ETS instead of external caches.
+
+### 28. Typespecs and Dialyzer
+`@spec`, `@type`, `@callback`, `@opaque`, and static analysis with Dialyzer. Documenting intent, catching bugs at compile time, and improving editor tooling.
+
+### 29. Debugging and Tooling
+`IO.inspect/2` with `:label`, `dbg/2`, IEx helpers, `:observer.start()`, `mix xref`, `:sys.get_state/1`, and Erlang's `:debugger` and `:recon`.
+
+### 30. Guards in Depth
+Guard-safe expressions, `is_*` type checks, custom guards with `defguard/2`, combining guards with `and`/`or`, and common gotchas like `is_map/1` matching structs.
