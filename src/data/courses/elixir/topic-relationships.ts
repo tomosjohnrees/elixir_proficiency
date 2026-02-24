@@ -12,6 +12,7 @@ export const categoryMeta: Record<
   foundations: { label: "Foundations", color: "#3b82f6" },
   "data-processing": { label: "Data Processing", color: "#059669" },
   "otp-concurrency": { label: "OTP & Concurrency", color: "#8b5cf6" },
+  oop: { label: "Object-Oriented", color: "#f59e0b" },
   abstraction: { label: "Abstraction", color: "#d97706" },
   ecosystem: { label: "Ecosystem", color: "#e11d48" },
   tooling: { label: "Tooling & Style", color: "#0891b2" },

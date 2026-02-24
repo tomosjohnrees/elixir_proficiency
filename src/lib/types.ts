@@ -120,6 +120,7 @@ export type TopicCategory =
   | "foundations"
   | "data-processing"
   | "otp-concurrency"
+  | "oop"
   | "abstraction"
   | "ecosystem"
   | "tooling";

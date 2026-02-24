@@ -12,6 +12,18 @@ import {
   getTopicCategory as elixirGetTopicCategory,
   getEdgeStrength as elixirGetEdgeStrength,
 } from "@/data/courses/elixir/topic-relationships";
+import { topicRegistry as rubyTopics } from "@/data/courses/ruby/topics";
+import { quizPool as rubyQuizPool } from "@/data/courses/ruby/quiz-pool";
+import {
+  topicGraph as rubyTopicGraph,
+  categoryMeta as rubyCategoryMeta,
+  categoryOrder as rubyCategoryOrder,
+  getPrerequisites as rubyGetPrerequisites,
+  getNextTopics as rubyGetNextTopics,
+  getTopicBySlug as rubyGetTopicBySlug,
+  getTopicCategory as rubyGetTopicCategory,
+  getEdgeStrength as rubyGetEdgeStrength,
+} from "@/data/courses/ruby/topic-relationships";
 
 export const courseRegistry: CourseMeta[] = [
   {
@@ -19,6 +31,13 @@ export const courseRegistry: CourseMeta[] = [
     title: "Elixir",
     description: "Master Elixir from zero to proficiency through interactive lessons",
     icon: "\u25C6",
+    topicCount: 30,
+  },
+  {
+    slug: "ruby",
+    title: "Ruby",
+    description: "Master Ruby from zero to proficiency through interactive lessons",
+    icon: "\u25C8",
     topicCount: 30,
   },
 ];
@@ -31,6 +50,8 @@ export function getTopicRegistry(courseSlug: string): TopicMeta[] {
   switch (courseSlug) {
     case "elixir":
       return elixirTopics;
+    case "ruby":
+      return rubyTopics;
     default:
       return [];
   }
@@ -40,6 +61,8 @@ export function getQuizPool(courseSlug: string): TaggedQuizQuestion[] {
   switch (courseSlug) {
     case "elixir":
       return elixirQuizPool;
+    case "ruby":
+      return rubyQuizPool;
     default:
       return [];
   }
@@ -49,6 +72,8 @@ export function getTopicGraph(courseSlug: string): TopicGraph | null {
   switch (courseSlug) {
     case "elixir":
       return elixirTopicGraph;
+    case "ruby":
+      return rubyTopicGraph;
     default:
       return null;
   }
@@ -66,6 +91,17 @@ export function getCourseRelationships(courseSlug: string) {
         getTopicBySlug: elixirGetTopicBySlug,
         getTopicCategory: elixirGetTopicCategory,
         getEdgeStrength: elixirGetEdgeStrength,
+      };
+    case "ruby":
+      return {
+        topicGraph: rubyTopicGraph,
+        categoryMeta: rubyCategoryMeta,
+        categoryOrder: rubyCategoryOrder,
+        getPrerequisites: rubyGetPrerequisites,
+        getNextTopics: rubyGetNextTopics,
+        getTopicBySlug: rubyGetTopicBySlug,
+        getTopicCategory: rubyGetTopicCategory,
+        getEdgeStrength: rubyGetEdgeStrength,
       };
     default:
       return null;
@@ -108,6 +144,10 @@ export function getTopicModules(
         "ets": () => import("@/data/courses/elixir/topics/ets"),
         "typespecs-and-dialyzer": () => import("@/data/courses/elixir/topics/typespecs-and-dialyzer"),
         "guards-in-depth": () => import("@/data/courses/elixir/topics/guards-in-depth"),
+      };
+    case "ruby":
+      return {
+        "basic-data-types": () => import("@/data/courses/ruby/topics/basic-data-types"),
       };
     default:
       return {};
