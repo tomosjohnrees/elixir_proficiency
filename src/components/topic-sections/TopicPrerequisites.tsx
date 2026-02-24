@@ -7,13 +7,14 @@ import {
   getTopicBySlug,
   getTopicCategory,
   categoryMeta,
-} from "@/data/topic-relationships";
+} from "@/data/courses/elixir/topic-relationships";
 
 interface TopicPrerequisitesProps {
   slug: string;
+  courseSlug: string;
 }
 
-export default function TopicPrerequisites({ slug }: TopicPrerequisitesProps) {
+export default function TopicPrerequisites({ slug, courseSlug }: TopicPrerequisitesProps) {
   const prereqs = getPrerequisites(slug);
   if (prereqs.length === 0) return null;
 
@@ -36,7 +37,7 @@ export default function TopicPrerequisites({ slug }: TopicPrerequisitesProps) {
         return (
           <Link
             key={prereqSlug}
-            href={`/topics/${prereqSlug}`}
+            href={`/${courseSlug}/topics/${prereqSlug}`}
             className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border border-border hover:border-accent bg-surface transition-colors"
           >
             <span className="font-mono font-bold" style={{ color }}>

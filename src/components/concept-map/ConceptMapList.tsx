@@ -8,10 +8,10 @@ import {
   categoryOrder,
   getNextTopics,
   getTopicBySlug,
-} from "@/data/topic-relationships";
+} from "@/data/courses/elixir/topic-relationships";
 import { fadeUp, stagger } from "@/lib/motion";
 
-export default function ConceptMapList() {
+export default function ConceptMapList({ courseSlug }: { courseSlug: string }) {
   return (
     <motion.div
       className="space-y-6"
@@ -41,7 +41,7 @@ export default function ConceptMapList() {
                 return (
                   <Link
                     key={node.slug}
-                    href={`/topics/${node.slug}`}
+                    href={`/${courseSlug}/topics/${node.slug}`}
                     className="flex items-center gap-2 p-2.5 rounded-lg border border-border hover:border-accent bg-surface transition-colors group"
                   >
                     <span

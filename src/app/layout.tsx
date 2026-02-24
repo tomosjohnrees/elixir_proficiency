@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Elixir Proficiency",
-  description: "Master Elixir from zero to proficiency through interactive lessons",
+  title: "Code Proficiency",
+  description: "Master programming through interactive lessons",
 };
 
 export default function RootLayout({

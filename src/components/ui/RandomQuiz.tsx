@@ -31,7 +31,7 @@ function shuffle<T>(arr: T[]): T[] {
   return copy;
 }
 
-export default function RandomQuiz({ pool }: { pool: TaggedQuizQuestion[] }) {
+export default function RandomQuiz({ pool, courseSlug }: { pool: TaggedQuizQuestion[]; courseSlug: string }) {
   const [phase, setPhase] = useState<Phase>("intro");
   const [questions, setQuestions] = useState<TaggedQuizQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -110,7 +110,7 @@ export default function RandomQuiz({ pool }: { pool: TaggedQuizQuestion[] }) {
           </motion.div>
           <h2 className="text-2xl font-bold mb-3">Random Quiz</h2>
           <p className="text-muted max-w-md mx-auto mb-8">
-            Test your Elixir knowledge with 10 random questions drawn from all 25
+            Test your knowledge with 10 random questions drawn from across all
             topics. See how much you really know!
           </p>
           <motion.button
@@ -218,7 +218,7 @@ export default function RandomQuiz({ pool }: { pool: TaggedQuizQuestion[] }) {
               transition={{ delay: 0.35 }}
             >
               {score === answers.length
-                ? "Perfect score! You really know your Elixir!"
+                ? "Perfect score!"
                 : score >= answers.length * 0.7
                   ? "Great job! Just a few areas to brush up on."
                   : score >= answers.length * 0.4
@@ -239,7 +239,7 @@ export default function RandomQuiz({ pool }: { pool: TaggedQuizQuestion[] }) {
                     transition={{ delay: 0.3 + i * 0.05 }}
                   >
                     <Link
-                      href={`/topics/${t.slug}`}
+                      href={`/${courseSlug}/topics/${t.slug}`}
                       className="flex items-center justify-between rounded-lg border border-border p-4 hover:border-accent hover:shadow-md transition-all bg-surface group"
                     >
                       <div className="flex items-center gap-3">

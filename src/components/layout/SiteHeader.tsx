@@ -15,7 +15,7 @@ export default function SiteHeader() {
       <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 font-semibold text-lg">
           <span className="text-accent">&#9670;</span>
-          <span>Elixir Proficiency</span>
+          <span>Code Proficiency</span>
         </Link>
         <ThemeToggle />
       </div>

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { quizPool } from "@/data/quiz-pool";
+import { quizPool } from "@/data/courses/elixir/quiz-pool";
 import RandomQuiz from "@/components/ui/RandomQuiz";
 
 // Mock next/link to render as plain anchor
@@ -151,19 +151,19 @@ describe("RandomQuiz component", () => {
   ];
 
   it("renders intro phase with Start Quiz button", () => {
-    render(<RandomQuiz pool={testPool} />);
+    render(<RandomQuiz pool={testPool} courseSlug="elixir" />);
     expect(screen.getByText("Random Quiz")).toBeInTheDocument();
     expect(screen.getByText("Start Quiz")).toBeInTheDocument();
   });
 
   it("transitions from intro to active phase on start", () => {
-    render(<RandomQuiz pool={testPool} />);
+    render(<RandomQuiz pool={testPool} courseSlug="elixir" />);
     fireEvent.click(screen.getByText("Start Quiz"));
     expect(screen.getByText(/Question 1 of 10/)).toBeInTheDocument();
   });
 
   it("shows topic badge in active phase", () => {
-    render(<RandomQuiz pool={testPool} />);
+    render(<RandomQuiz pool={testPool} courseSlug="elixir" />);
     fireEvent.click(screen.getByText("Start Quiz"));
     // One of the topic titles should be visible as a badge
     const badges = testPool.map((q) => q.topicTitle);
@@ -172,7 +172,7 @@ describe("RandomQuiz component", () => {
   });
 
   it("shows Next Question button after answering", () => {
-    render(<RandomQuiz pool={testPool} />);
+    render(<RandomQuiz pool={testPool} courseSlug="elixir" />);
     fireEvent.click(screen.getByText("Start Quiz"));
 
     // Click the first option to answer
@@ -183,7 +183,7 @@ describe("RandomQuiz component", () => {
   });
 
   it("completes full quiz flow and shows results", () => {
-    render(<RandomQuiz pool={testPool} />);
+    render(<RandomQuiz pool={testPool} courseSlug="elixir" />);
     fireEvent.click(screen.getByText("Start Quiz"));
 
     // Answer all 10 questions
@@ -208,7 +208,7 @@ describe("RandomQuiz component", () => {
   });
 
   it("shows topics to review when answers are wrong", () => {
-    render(<RandomQuiz pool={testPool} />);
+    render(<RandomQuiz pool={testPool} courseSlug="elixir" />);
     fireEvent.click(screen.getByText("Start Quiz"));
 
     // Answer all 10 questions - always pick the last option (likely wrong for most)
@@ -238,7 +238,7 @@ describe("RandomQuiz component", () => {
   });
 
   it("Try Again restarts the quiz", () => {
-    render(<RandomQuiz pool={testPool} />);
+    render(<RandomQuiz pool={testPool} courseSlug="elixir" />);
     fireEvent.click(screen.getByText("Start Quiz"));
 
     // Answer all 10 questions quickly

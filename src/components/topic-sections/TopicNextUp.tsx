@@ -9,14 +9,15 @@ import {
   getTopicCategory,
   getEdgeStrength,
   categoryMeta,
-} from "@/data/topic-relationships";
+} from "@/data/courses/elixir/topic-relationships";
 import { fadeUp, stagger } from "@/lib/motion";
 
 interface TopicNextUpProps {
   slug: string;
+  courseSlug: string;
 }
 
-export default function TopicNextUp({ slug }: TopicNextUpProps) {
+export default function TopicNextUp({ slug, courseSlug }: TopicNextUpProps) {
   const nextSlugs = getNextTopics(slug);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-10% 0px" });
@@ -58,7 +59,7 @@ export default function TopicNextUp({ slug }: TopicNextUpProps) {
             return (
               <motion.div key={nextSlug} variants={fadeUp}>
                 <Link
-                  href={`/topics/${nextSlug}`}
+                  href={`/${courseSlug}/topics/${nextSlug}`}
                   className="block rounded-xl border border-border p-4 hover:border-accent hover:shadow-md transition-all bg-surface group"
                   style={{ borderLeftColor: color, borderLeftWidth: 3 }}
                 >
@@ -102,7 +103,7 @@ export default function TopicNextUp({ slug }: TopicNextUpProps) {
               return (
                 <Link
                   key={nextSlug}
-                  href={`/topics/${nextSlug}`}
+                  href={`/${courseSlug}/topics/${nextSlug}`}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border border-border hover:border-accent bg-surface transition-colors"
                 >
                   <span className="font-mono font-bold text-accent">

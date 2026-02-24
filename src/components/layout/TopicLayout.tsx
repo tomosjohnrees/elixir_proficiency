@@ -8,6 +8,7 @@ interface TopicLayoutProps {
   title: string;
   description: string;
   slug?: string;
+  courseSlug?: string;
   hasGotchas?: boolean;
   children: React.ReactNode;
 }
@@ -16,6 +17,7 @@ export default function TopicLayout({
   title,
   description,
   slug,
+  courseSlug,
   hasGotchas,
   children,
 }: TopicLayoutProps) {
@@ -31,7 +33,7 @@ export default function TopicLayout({
         >
           <h1 className="text-3xl font-bold mb-2">{title}</h1>
           <p className="text-muted text-lg">{description}</p>
-          {slug && <TopicPrerequisites slug={slug} />}
+          {slug && <TopicPrerequisites slug={slug} courseSlug={courseSlug || ""} />}
         </motion.div>
         <div className="space-y-16">{children}</div>
       </main>

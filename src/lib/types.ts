@@ -1,3 +1,11 @@
+export interface CourseMeta {
+  slug: string;
+  title: string;
+  description: string;
+  icon: string;
+  topicCount: number;
+}
+
 export interface TopicMeta {
   slug: string;
   title: string;

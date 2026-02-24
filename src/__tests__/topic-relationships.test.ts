@@ -4,8 +4,8 @@ import {
   getPrerequisites,
   getNextTopics,
   categoryMeta,
-} from "@/data/topic-relationships";
-import { topicRegistry } from "@/data/topics";
+} from "@/data/courses/elixir/topic-relationships";
+import { topicRegistry } from "@/data/courses/elixir/topics";
 
 describe("topic-relationships", () => {
   const activeSlugs = topicRegistry

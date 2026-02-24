@@ -8,7 +8,7 @@ import {
   categoryMeta,
   categoryOrder,
   getTopicBySlug,
-} from "@/data/topic-relationships";
+} from "@/data/courses/elixir/topic-relationships";
 import type { TopicCategory } from "@/lib/types";
 
 const SVG_W = 1000;
@@ -96,7 +96,7 @@ function computeEdgePath(
 const springSnappy = { type: "spring" as const, stiffness: 400, damping: 25 };
 const springGentle = { type: "spring" as const, stiffness: 300, damping: 30 };
 
-export default function ConceptMapSVG() {
+export default function ConceptMapSVG({ courseSlug }: { courseSlug: string }) {
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
   const router = useRouter();
 
@@ -134,7 +134,7 @@ export default function ConceptMapSVG() {
 
   const handleNodeClick = useCallback(
     (slug: string) => {
-      router.push(`/topics/${slug}`);
+      router.push(`/${courseSlug}/topics/${slug}`);
     },
     [router]
   );
