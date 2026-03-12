@@ -4,7 +4,9 @@ An interactive learning platform for developers picking up Elixir or Ruby. 25+ p
 
 ## Demo
 
-<video src="demo.mov" controls width="100%"></video>
+https://github.com/user-attachments/assets/139fce6c-ec0d-42eb-89cc-c612fa08caeb
+
+
 
 ## Getting started
 
